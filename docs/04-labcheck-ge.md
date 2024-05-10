@@ -1,4 +1,12 @@
-# Cannot Be Blank
+---
+layout: default
+title: Verifying and Installing Ansible Collections for SAP Installation
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Verifying and Installing Ansible Collections for SAP Installation
 
 In this exercise, you install the collections from Ansible Galaxy that
 you need to prepare and install SAP software.

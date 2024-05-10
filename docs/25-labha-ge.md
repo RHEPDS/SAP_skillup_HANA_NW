@@ -1,3 +1,11 @@
+---
+layout: default
+title: Verifying the Configuration of HA Cluster
+nav_order: 0
+has_children: true
+permalink: /
+---
+
 # Verifying the Configuration of HA Cluster Managing SAP Resources
 
 **Outcomes**

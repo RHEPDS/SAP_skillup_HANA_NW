@@ -1,3 +1,11 @@
+---
+layout: default
+title: Introducing Roles for SAP S/4 Deployments
+nav_order: 0
+has_children: true
+permalink: /
+---
+
 # Introducing Roles for SAP S/4 Deployments
 
 ## Overview of Installation of S/4 HANA
@@ -8,25 +16,25 @@ the SAP SWPM software for unattended installation. The role can install
 everything that SAP SWPM (or the `sapinst` command) can install. It is
 tested and working for the following scenarios:
 
--   One host installation
--   Dual host installation
--   Distributed installation
--   System restore
--   High availability installation
+- One host installation
+- Dual host installation
+- Distributed installation
+- System restore
+- High availability installation
 
 The role is tested and working for the following SAP products:
 
--   SAP S/4HANA 1909, 2020, 2021
--   SAP B/4HANA
--   SAP Solution Manager 7.2
--   SAP NetWeaver Business Suite Applications (ECC, GRC, and so on)
--   SAP Web Dispatcher
+- SAP S/4HANA 1909, 2020, 2021
+- SAP B/4HANA
+- SAP Solution Manager 7.2
+- SAP NetWeaver Business Suite Applications (ECC, GRC, and so on)
+- SAP Web Dispatcher
 
 The role is currently available only in the upstream repository, in the
 `community.sap_install collection`.
 
 To download the installation bundle, which is needed for your
-installation, you could use the *SAP Maintenance Planner*,
+installation, you could use the _SAP Maintenance Planner_,
 [](https://userapps.support.sap.com/sap/support/mp/index.html).
 
 The SAP Maintenance Planner helps you to create a list of all
@@ -321,5 +329,5 @@ configuration file.
 
 ##  
 
-[Upstream sap\_swpm Role
+[Upstream sap_swpm Role
 Description](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md)

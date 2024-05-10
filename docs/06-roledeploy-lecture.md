@@ -1,3 +1,11 @@
+---
+layout: default
+title: Describing the SAP HANA Deployment
+nav_order: 0
+has_children: true
+permalink: /
+---
+
 # Describing the SAP HANA Deployment
 
 ## Overview of the SAP HANA Deployment
@@ -24,7 +32,7 @@ each role, which you can find in the documentation, or see the default
 variable file at
 [](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_hana_install/defaults/main.yml).
 
-### sap\_hana\_install
+### sap_hana_install
 
 This role installs SAP HANA. It creates the configuration file for an
 unattended installation of SAP HANA with `hdblcm` and starts the
@@ -32,15 +40,15 @@ installation process.
 
 The minimum parameters to set for this role are as follows:
 
--   `sap_hana_install_software_directory`: The directory with the
-    unpacked HANA software or the downloaded archive
+- `sap_hana_install_software_directory`: The directory with the
+  unpacked HANA software or the downloaded archive
 
--   `sap_hana_install_master_password`: The password for the SAP
-    administrative user
+- `sap_hana_install_master_password`: The password for the SAP
+  administrative user
 
--   `sap_hana_sid`: The 3-character SID of the HANA database
+- `sap_hana_sid`: The 3-character SID of the HANA database
 
--   `sap_hana_instance_number`: The instance number of the HANA database
+- `sap_hana_instance_number`: The instance number of the HANA database
 
 If the archives are on a shared file server, you must set add the
 `sap_hana_install_software_extract_directory` variable to a local
@@ -69,7 +77,7 @@ Vault](https://www.redhat.com/sysadmin/ansible-vault-secure-playbooks)
 [Ansible Controller Custom Credential
 Types](https://docs.ansible.com/automation-controller/latest/html/userguide/credential_types.html)
 
-[sap\_hana\_install Ansible Role
+[sap_hana_install Ansible Role
 documentation](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_hana_install)
 
 [Overview of SAP HANA Configuration File

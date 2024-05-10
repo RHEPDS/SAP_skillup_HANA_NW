@@ -1,4 +1,14 @@
-# Configuring a Basic High Availability Cluster for SAP
+---
+layout: default
+title: Configuring Pacemaker Cluster HA for SAP NetWeaver
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Configuring a Basic High Availability Cluster for SAP Netweaver
+
+<!-- REWORK REQUIRED -->
 
 ## Install the Node Software
 
@@ -138,10 +148,10 @@ The first step to set up fencing is to configure the physical fencing
 device. Different hardware devices are capable of fencing cluster nodes,
 for example:
 
--   Uninterruptible power supplies (UPS)
--   Power distribution units (PDU)
--   Blade power control devices
--   Lights-out devices
+- Uninterruptible power supplies (UPS)
+- Power distribution units (PDU)
+- Blade power control devices
+- Lights-out devices
 
 The fence devices must be added to the cluster. For physical machine
 fencing, each cluster node might require its own fence device. Use the
@@ -357,16 +367,16 @@ before the `SAPHana` resources are started. Also, the virtual IP address
 must be present on the node where the Master resource of `SAPHana` is
 running. To do so, the following two constraints must be created:
 
--   The `symmetrical=false` attribute defines that only the start of
-    resources is of interest, and they do not need to be stopped in
-    reverse order.
+- The `symmetrical=false` attribute defines that only the start of
+  resources is of interest, and they do not need to be stopped in
+  reverse order.
 
--   Both resources (`SAPHana` and `SAPHanaTopology`) have the
-    `interleave=true` attribute that allows parallel starting of these
-    resources on nodes. Regardless of ordering, it is not needed to wait
-    for all nodes to start `SAPHanaTopology`, and you can start the
-    `SAPHana` resource on any nodes as soon as `SAPHanaTopology` is
-    running there.
+- Both resources (`SAPHana` and `SAPHanaTopology`) have the
+  `interleave=true` attribute that allows parallel starting of these
+  resources on nodes. Regardless of ordering, it is not needed to wait
+  for all nodes to start `SAPHanaTopology`, and you can start the
+  `SAPHana` resource on any nodes as soon as `SAPHanaTopology` is
+  running there.
 
 Command for creating the constraint:
 
@@ -397,7 +407,7 @@ tools such as SAP Management Console or SAP Landscape Virtualization
 Management that can use this address to query the status information
 about the SAP instance.
 
-For more information, see *Colocating Cluster Resources*,
+For more information, see _Colocating Cluster Resources_,
 [](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/assembly_colocating-cluster-resources.adoc_configuring-and-managing-high-availability-clusters)
 
 The resulting constraint should look as follows:
@@ -430,35 +440,35 @@ the `operationMode` to `logreplay_readaccess`.
 Use the appropriate resource agent for managing the IP address based on
 the platform where the cluster is running.
 
--   Create location constraints so that the secondary virtual IP address
-    is placed on the right cluster node at the right time:
+- Create location constraints so that the secondary virtual IP address
+  is placed on the right cluster node at the right time:
 
-        [root@node ~]# pcs constraint location vip2_<SID>_<InstanceNumber> \
-        > rule score=INFINITY hana_<sid>_sync_state eq SOK and hana_<sid>_roles \
-        > eq 4:S:master1:master:worker:master
-        [root@node ~]# pcs constraint location vip2_<SID>_<InstanceNumber> \
-        > rule score=2000 hana_<sid>_sync_state eq PRIM and hana_<sid>_roles eq \
-        > 4:P:master1:master:worker:master
+      [root@node ~]# pcs constraint location vip2_<SID>_<InstanceNumber> \
+      > rule score=INFINITY hana_<sid>_sync_state eq SOK and hana_<sid>_roles \
+      > eq 4:S:master1:master:worker:master
+      [root@node ~]# pcs constraint location vip2_<SID>_<InstanceNumber> \
+      > rule score=2000 hana_<sid>_sync_state eq PRIM and hana_<sid>_roles eq \
+      > 4:P:master1:master:worker:master
 
--   These location constraints ensure that the second virtual IP
-    resource has the following behavior:
+- These location constraints ensure that the second virtual IP
+  resource has the following behavior:
 
-    -   If both a PRIMARY node and a SECONDARY node are available, with
-        HANA System Replication as `SOK`, then the second virtual IP
-        runs on the SECONDARY node.
+  - If both a PRIMARY node and a SECONDARY node are available, with
+    HANA System Replication as `SOK`, then the second virtual IP
+    runs on the SECONDARY node.
 
-    -   If the SECONDARY node is not available or the HANA System
-        Replication is not `SOK`, then the secondary virtual IP runs on
-        the PRIMARY node. If the SECONDARY node is available and the
-        HANA System Replication is `SOK` again, then the second virtual
-        IP moves back to the SECONDARY node.
+  - If the SECONDARY node is not available or the HANA System
+    Replication is not `SOK`, then the secondary virtual IP runs on
+    the PRIMARY node. If the SECONDARY node is available and the
+    HANA System Replication is `SOK` again, then the second virtual
+    IP moves back to the SECONDARY node.
 
-    -   If the PRIMARY node is not available or the HANA instance that
-        runs there has a problem, then after the failover, the SECONDARY
-        gets promoted to the PRIMARY role, and the second virtual IP
-        continues to run on the same node until the takeover of the
-        SECONDARY node is complete and the HANA System Replication is
-        `SOK`.
+  - If the PRIMARY node is not available or the HANA instance that
+    runs there has a problem, then after the failover, the SECONDARY
+    gets promoted to the PRIMARY role, and the second virtual IP
+    continues to run on the same node until the takeover of the
+    SECONDARY node is complete and the HANA System Replication is
+    `SOK`.
 
 The time is maximized when the second virtual IP resource is assigned to
 a node where a healthy SAP HANA instance is running.
@@ -467,12 +477,12 @@ a node where a healthy SAP HANA instance is running.
 
 **Create a resource for ASCS instance**
 
--   For ENSA1: When the installation and testing are complete according
-    to earlier chapters, you can integrate the SAP NetWeaver system into
-    the pacemaker cluster. Assuming that your underlying storage and
-    network environment as applicable are configured according to SAP
-    guidelines and are part of the cluster, then the following command
-    starts the SAP NetWeaver resources into the pacemaker cluster.
+- For ENSA1: When the installation and testing are complete according
+  to earlier chapters, you can integrate the SAP NetWeaver system into
+  the pacemaker cluster. Assuming that your underlying storage and
+  network environment as applicable are configured according to SAP
+  guidelines and are part of the cluster, then the following command
+  starts the SAP NetWeaver resources into the pacemaker cluster.
 
 <!-- -->
 
@@ -491,52 +501,52 @@ and does not migrate around the cluster uncontrollably. The
 `migration-threshold=1` value ensures ASCS failover to another node when
 an issue is detected instead of restarting on the same node.
 
--   For ENSA2:
+- For ENSA2:
 
-        [root@node ~]# pcs resource create <sid>_ascs<InstanceNumber> SAPInstance \
-        > InstanceName="<SID>_ASCS<InstanceNumber>_s4ascs" \
-        > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ASCS<InstanceNumber>_s4ascs \
-        > AUTOMATIC_RECOVER=false \
-        > meta resource-stickiness=5000 \
-        > --group <sid>_ASCS<InstanceNumber>_group \
-        > op monitor interval=20 on-fail=restart timeout=60 \
-        > op start interval=0 timeout=600 \
-        > op stop interval=0 timeout=600
+      [root@node ~]# pcs resource create <sid>_ascs<InstanceNumber> SAPInstance \
+      > InstanceName="<SID>_ASCS<InstanceNumber>_s4ascs" \
+      > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ASCS<InstanceNumber>_s4ascs \
+      > AUTOMATIC_RECOVER=false \
+      > meta resource-stickiness=5000 \
+      > --group <sid>_ASCS<InstanceNumber>_group \
+      > op monitor interval=20 on-fail=restart timeout=60 \
+      > op start interval=0 timeout=600 \
+      > op stop interval=0 timeout=600
 
-    Add a resource stickiness value to the group to ensure that the ASCS
-    stays on a node if possible:
+  Add a resource stickiness value to the group to ensure that the ASCS
+  stays on a node if possible:
 
-        [root@node ~]# pcs resource meta <sid>_ASCS<InstanceNumber>_group \
-        > resource-stickiness=3000
+      [root@node ~]# pcs resource meta <sid>_ASCS<InstanceNumber>_group \
+      > resource-stickiness=3000
 
-    Create a resource for an ERS instance  
-    Create the ERS instance cluster resource.
+  Create a resource for an ERS instance
+  Create the ERS instance cluster resource.
 
 The `IS_ERS=true` attribute is mandatory for ENSA1 deployments. For more
-information about `IS_ERS`, see *How Does the IS\_ERS Attribute Work on
+information about `IS_ERS`, see _How Does the IS_ERS Attribute Work on
 an SAP NetWeaver Cluster with Stand-alone Enqueue Server (ENSA1 and
-ENSA2)?*: [](https://access.redhat.com/solutions/5474031)
+ENSA2)?_: [](https://access.redhat.com/solutions/5474031)
 
--   For ENSA1:
+- For ENSA1:
 
-        [root@node ~]# pcs resource create <sid>_ers<InstanceNumber> SAPInstance \
-        > InstanceName="<SID>_ERS<InstanceNumber>_rhers" \
-        > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ERS<InstanceNumber>_rhers \
-        > AUTOMATIC_RECOVER=false IS_ERS=true --group rh2_ERS29_group \
-        > op monitor interval=20 on-fail=restart timeout=60 \
-        > op start interval=0 timeout=600 \
-        > op stop interval=0 timeout=600
+      [root@node ~]# pcs resource create <sid>_ers<InstanceNumber> SAPInstance \
+      > InstanceName="<SID>_ERS<InstanceNumber>_rhers" \
+      > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ERS<InstanceNumber>_rhers \
+      > AUTOMATIC_RECOVER=false IS_ERS=true --group rh2_ERS29_group \
+      > op monitor interval=20 on-fail=restart timeout=60 \
+      > op start interval=0 timeout=600 \
+      > op stop interval=0 timeout=600
 
--   For ENSA2:
+- For ENSA2:
 
-        [root@node ~]# pcs resource create s4h_ers29 SAPInstance \
-        > InstanceName="S4H_ERS29_s4ers" \
-        > START_PROFILE=/sapmnt/S4H/profile/S4H_ERS29_s4ers \
-        > AUTOMATIC_RECOVER=false \
-        > --group s4h_ERS29_group \
-        > op monitor interval=20 on-fail=restart timeout=60 \
-        > op start interval=0 timeout=600 \
-        > op stop interval=0 timeout=600
+      [root@node ~]# pcs resource create s4h_ers29 SAPInstance \
+      > InstanceName="S4H_ERS29_s4ers" \
+      > START_PROFILE=/sapmnt/S4H/profile/S4H_ERS29_s4ers \
+      > AUTOMATIC_RECOVER=false \
+      > --group s4h_ERS29_group \
+      > op monitor interval=20 on-fail=restart timeout=60 \
+      > op start interval=0 timeout=600 \
+      > op stop interval=0 timeout=600
 
 **Create the required constraints**
 
@@ -552,8 +562,8 @@ whenever both nodes are available.
 This concludes the chapter on Configuring a Basic High Availability
 Cluster for SAP.
 
-*Configuring and Managing High Availability Clusters*,
+_Configuring and Managing High Availability Clusters_,
 [](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/index)
 
-*Automating SAP HANA Scale-Up System Replication using the RHEL HA
-Add-On*, [](https://access.redhat.com/articles/3004101)
+_Automating SAP HANA Scale-Up System Replication using the RHEL HA
+Add-On_, [](https://access.redhat.com/articles/3004101)

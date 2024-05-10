@@ -1,4 +1,12 @@
-# Configuring a Basic High Availability Cluster for SAP HANA
+---
+layout: default
+title: Deploying and Configuring the Pacemaker Cluster
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Deploying and Configuring the Pacemaker Cluster
 
 **Outcomes**
 
@@ -24,7 +32,7 @@ Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
 
 1.  After completing all the previous labs, do the following steps:
 
-    1.  Verify that the ansible collection community.sap\_install is
+    1.  Verify that the ansible collection community.sap_install is
         installed in version 1.2.3
 
             [student@workstation ~]$ ansible-galaxy collection list

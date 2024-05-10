@@ -1,4 +1,12 @@
-# Cannot Be Blank
+---
+layout: default
+title: Preparing Ansible Playbooks to Configure SAP Servers for SAP Installation
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Preparing Ansible Playbooks to Configure SAP Servers for SAP Installation
 
 In this exercise, you access and use the lab environment, and browse the
 available resources.
@@ -54,13 +62,13 @@ lab environment, although it is common in a production environment.
 
     With this configuration, you achieve the following outcomes:
 
-    -   You update name resolution according to SAP requirements on each
-        server.
+    - You update name resolution according to SAP requirements on each
+      server.
 
-    -   The playbook does not stop if a reboot is required.
+    - The playbook does not stop if a reboot is required.
 
-    -   You update the system and reboot if required at the end of the
-        `sap_hana_preconfigure` role.
+    - You update the system and reboot if required at the end of the
+      `sap_hana_preconfigure` role.
 
 3.  Create the `group_vars/s4hanas` file with the following content:
 
@@ -82,15 +90,15 @@ lab environment, although it is common in a production environment.
 
     With this configuration, you achieve the following outcomes:
 
-    -   You update DNS and the `/etc/host` file according to SAP
-        requirements.
+    - You update DNS and the `/etc/host` file according to SAP
+      requirements.
 
-    -   The playbook does not stop if a reboot is required.
+    - The playbook does not stop if a reboot is required.
 
-    -   You update the system and reboot if required.
+    - You update the system and reboot if required.
 
-    -   Because you are installing a small lab system, you do not need
-        to add a large swap space.
+    - Because you are installing a small lab system, you do not need
+      to add a large swap space.
 
 4.  Create the `prepare-for-sap.yml` playbook to prepare the HANA and
     NetWeaver servers:
@@ -119,20 +127,20 @@ lab environment, although it is common in a production environment.
 
     A description of the parameters:
 
-    -   `-v`: Enables debugging (more verbose output)
+    - `-v`: Enables debugging (more verbose output)
 
-    -   `-K`: Prompts for the `sudo` password
+    - `-K`: Prompts for the `sudo` password
 
 **Finish**
 
 To complete this exercise, take these steps:
 
--   Run the `lab` command on the `workstation` machine, to create the
-    files in this exercise.
+- Run the `lab` command on the `workstation` machine, to create the
+  files in this exercise.
 
--   Run the `ansible-playbook` command to prepare the servers for SAP
-    installation if not successful previously, and complete the
-    exercise.
+- Run the `ansible-playbook` command to prepare the servers for SAP
+  installation if not successful previously, and complete the
+  exercise.
 
 <!-- -->
 

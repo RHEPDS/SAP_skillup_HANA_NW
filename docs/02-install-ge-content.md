@@ -1,4 +1,12 @@
-# Cannot Be Blank
+---
+layout: default
+title: Verifying Ansible Configuration on the Control Node
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Verifying Ansible Configuration on the Control Node
 
 In this exercise, you access and use the lab environment and browse the
 available resources.

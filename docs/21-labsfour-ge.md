@@ -1,4 +1,12 @@
-# Guided Exercise
+---
+layout: default
+title: Setting up SAP S/4
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Setting up SAP S/4
 
 In this exercise, you access and use the lab environment, and install
 SAP S/4HANA on a NetWeaver server.
@@ -63,24 +71,24 @@ This process might take some time.
 
     With this configuration, you achieve the following outcomes:
 
-    -   You install S4HANA 2021 Foundation in this exercise, because it
-        loads only approximately 16 GB into the HANA database, instead
-        of approximately 80 GB for the full ERP system. The Foundation
-        has only the basic routines, without application software.
+    - You install S4HANA 2021 Foundation in this exercise, because it
+      loads only approximately 16 GB into the HANA database, instead
+      of approximately 80 GB for the full ERP system. The Foundation
+      has only the basic routines, without application software.
 
-    -   You must define the path where the software is located.
+    - You must define the path where the software is located.
 
-    -   Set the passwords identically for everything. In production, you
-        would use a vault file or Ansible Automation Platform
-        credential.
+    - Set the passwords identically for everything. In production, you
+      would use a vault file or Ansible Automation Platform
+      credential.
 
-    -   Define the SID and the instance numbers of the primary
-        application server (PAS) and the central services (ASCS).
+    - Define the SID and the instance numbers of the primary
+      application server (PAS) and the central services (ASCS).
 
-    -   Note that SAP uses the term "FQDN" for the (fully qualified)
-        domain only.
+    - Note that SAP uses the term "FQDN" for the (fully qualified)
+      domain only.
 
-    -   Define the connection to the database.
+    - Define the connection to the database.
 
 3.  Create the `install-s4.yml` playbook, to install SAP HANA on the
     servers:
@@ -158,11 +166,11 @@ This process might take some time.
 
 To complete this exercise, take these steps:
 
--   Run the `lab` command on the `workstation` machine, and use the
-    `lab` command to create the files in this exercise.
+- Run the `lab` command on the `workstation` machine, and use the
+  `lab` command to create the files in this exercise.
 
--   Run the `ansible-playbook` command to install the S/4HANA server if
-    not successful previously, and complete the exercise.
+- Run the `ansible-playbook` command to install the S/4HANA server if
+  not successful previously, and complete the exercise.
 
 These steps are important to ensure that resources from previous
 exercises do not impact upcoming exercises.

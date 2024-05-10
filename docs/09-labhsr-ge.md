@@ -1,4 +1,12 @@
-# Guided Exercise
+---
+layout: default
+title: Setting up the SAP HSR
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Setting up the SAP HSR
 
 In this exercise, you access and use the lab environment, and install
 SAP HANA system replication on the previously installed SAP HANA
@@ -38,8 +46,8 @@ creating your Ansible Playbooks in the future.
 
     With this configuration, you achieve the following outcome:
 
-    -   You define the nodes for system replication. This variable is
-        also used later in the cluster setup.
+    - You define the nodes for system replication. This variable is
+      also used later in the cluster setup.
 
 3.  Create the `setup-hsr.yml` playbook to install SAP HANA on the
     servers:
@@ -295,11 +303,11 @@ creating your Ansible Playbooks in the future.
 
 To complete this exercise, take these steps:
 
--   Run the `lab` command on the `workstation` machine, and use the
-    `lab` command to create the files in this exercise.
+- Run the `lab` command on the `workstation` machine, and use the
+  `lab` command to create the files in this exercise.
 
--   Run the `ansible-playbook` command to configure HANA system
-    replication if not successful previously, and complete the exercise.
+- Run the `ansible-playbook` command to configure HANA system
+  replication if not successful previously, and complete the exercise.
 
 These steps are important to ensure that resources from previous
 exercises do not impact upcoming exercises.

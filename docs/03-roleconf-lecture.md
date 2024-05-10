@@ -1,4 +1,12 @@
-# Cannot Be Blank
+---
+layout: default
+title: Installing and Configuring Ansible Roles for Base Configuration of SAP Systems
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Installing and Configuring Ansible Roles for Base Configuration of SAP Systems
 
 ## Overview of the Installation Workflow
 
@@ -20,12 +28,12 @@ The server provisioning (step 1) is typically the most individual part
 for each customer in this workflow. For example, it could involve the
 following activities:
 
--   Bare metal rack mounting, cabling, and kickstarting, or with a
-    pre-provisioned operating system by the supplier
+- Bare metal rack mounting, cabling, and kickstarting, or with a
+  pre-provisioned operating system by the supplier
 
--   Virtual environments with kickstart or image provisioning
+- Virtual environments with kickstart or image provisioning
 
--   A public or private cloud with image provisioning
+- A public or private cloud with image provisioning
 
 Thus, this initial phase can be achieved in many ways It might need
 manual intervention for bare metal servers. Automation tools such as
@@ -57,66 +65,66 @@ might be useful:
 
 1.  Linux System Roles Collection (`redhat.rhel_system_roles`)
 
-    -   `rhel_system_roles.storage`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
-        for the storage configuration of your systems
+    - `rhel_system_roles.storage`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
+      for the storage configuration of your systems
 
-    -   `rhel_system_roles.timesync`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/timesync) -
-        for proper time synchronization
+    - `rhel_system_roles.timesync`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/timesync) -
+      for proper time synchronization
 
-    -   `rhel_system_roles.network`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/network) -
-        for complex network configurations, which are typical in SAP
-        environments
+    - `rhel_system_roles.network`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/network) -
+      for complex network configurations, which are typical in SAP
+      environments
 
 2.  SAP Installation Collections (`redhat.sap_install`)
 
-    -   `sap_install.sap_general_preconfigure`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_general_preconfigure) -
-        configures general requirements for SAP software
+    - `sap_install.sap_general_preconfigure`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_general_preconfigure) -
+      configures general requirements for SAP software
 
-    -   `sap_install.sap_hana_preconfigure`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_hana_preconfigure) -
-        configures SAP HANA-specific requirements
+    - `sap_install.sap_hana_preconfigure`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_hana_preconfigure) -
+      configures SAP HANA-specific requirements
 
-    -   `sap_install.sap_hana_install`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_hana_install) -
-        runs the `hdblcm` SAP HANA installer unattended
+    - `sap_install.sap_hana_install`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_hana_install) -
+      runs the `hdblcm` SAP HANA installer unattended
 
 For installing SAP NetWeaver, these roles from the following collections
 might be useful:
 
 1.  Linux System Roles Collection (`redhat.rhel_system_roles`)
 
-    -   `rhel_system_roles.storage`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
-        for the storage configuration of your systems
+    - `rhel_system_roles.storage`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
+      for the storage configuration of your systems
 
-    -   `rhel_system_roles.timesync`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/timesync) -
-        for proper time synchronization
+    - `rhel_system_roles.timesync`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/timesync) -
+      for proper time synchronization
 
-    -   `rhel_system_roles.network`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/network) -
-        for complex network configurations, which are typical in SAP
-        environments
+    - `rhel_system_roles.network`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/network) -
+      for complex network configurations, which are typical in SAP
+      environments
 
 2.  SAP Installation Collections (`redhat.sap_install` and
     `community.sap_install`)
 
-    -   `sap_install.sap_general_preconfigure`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_general_preconfigure) -
-        configures general requirements for SAP software
+    - `sap_install.sap_general_preconfigure`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_general_preconfigure) -
+      configures general requirements for SAP software
 
-    -   `sap_install.sap_netweaver_preconfigure`,
-        [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_netweaver_preconfigure) -
-        configures SAP NetWeaver-specific requirements
+    - `sap_install.sap_netweaver_preconfigure`,
+      [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_netweaver_preconfigure) -
+      configures SAP NetWeaver-specific requirements
 
-    -   `sap_install.sap_swpm`,
-        [](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md) -
-        executes `sapinst` with created configuration file for
-        unattended installation
+    - `sap_install.sap_swpm`,
+      [](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md) -
+      executes `sapinst` with created configuration file for
+      unattended installation
 
 Click each of these roles for details of how to use them.
 
@@ -127,10 +135,10 @@ prepare a system to get HANA or NetWeaver software. You can use a more
 granular configuration of each role, which you can find in the
 documentation.
 
-### rhel\_system\_roles.storage
+### rhel_system_roles.storage
 
 SAP servers have storage requirements that depend on the server size. A
-detailed SAP HANA sizing guide is attached to *SAP Note \#1900823* at
+detailed SAP HANA sizing guide is attached to _SAP Note \#1900823_ at
 [](https://launchpad.support.sap.com/#/notes/1900823). SAP NetWeaver has
 special requirements for the swap space.
 
@@ -151,11 +159,11 @@ To configure the storage appropriately, this role can be used. According
 to the sizing guides, a single-node SAP HANA system requires the
 following storage volumes:
 
--   `/hana/shared/<SID>`: minimum 1x RAM, 1 TB
+- `/hana/shared/<SID>`: minimum 1x RAM, 1 TB
 
--   `/hana/data/<SID>`: 1.2x anticipated net data size on disk
+- `/hana/data/<SID>`: 1.2x anticipated net data size on disk
 
--   `/hana/log/<SID>`: minimum RAM/2, 512 GB
+- `/hana/log/<SID>`: minimum RAM/2, 512 GB
 
 An example variable configuration for a 128 GB system might look as
 follows:
@@ -193,7 +201,7 @@ For initial installations, it can be useful to set the
 `storage_safe_mode` variable to `false`. In that case, existing
 configurations are overwritten.
 
-### rhel\_system\_roles.timesync
+### rhel_system_roles.timesync
 
 SAP requires proper time synchronization. This Linux system role is a
 proper way to set the time. It can be used with different providers,
@@ -206,19 +214,19 @@ The following example configures the `chrony` time server:
             iburst: yes
     timesync_ntp_provider: chrony
 
-### rhel\_system\_roles.network
+### rhel_system_roles.network
 
 Although this role is not needed in this course, it is a valuable role
 for SAP setups, because a production system typically has separate
 networks or VLANs for the following purposes:
 
--   Public network to access the SAP service
+- Public network to access the SAP service
 
--   Cluster interconnect
+- Cluster interconnect
 
--   Administrative network (to run Ansible)
+- Administrative network (to run Ansible)
 
--   Maybe others
+- Maybe others
 
 An example variable configuration might look as follows:
 
@@ -270,10 +278,10 @@ An example variable configuration might look as follows:
 You might add another interface to the bond or a more detailed IP
 configuration. The concept should be clear by now.
 
-### sap\_general\_preconfigure
+### sap_general_preconfigure
 
-SAP requires a couple of basic settings that are described in *SAP Note
-2369910*, [](https://launchpad.support.sap.com/#/notes/2369910), and
+SAP requires a couple of basic settings that are described in _SAP Note
+2369910_, [](https://launchpad.support.sap.com/#/notes/2369910), and
 some other SAP notes. The `sap_general_preconfigure` role defines the
 parameters that must be set for all SAP software.
 
@@ -301,14 +309,14 @@ interface of the SAP service is likely to be different from the
 administrative interface. The following variables must be set
 accordingly when you allow changes to the `/etc/hosts` file:
 
--   `sap_hostname`: The short hostname of the public IP of the SAP
-    server. It defaults to `ansible_hostname`.
+- `sap_hostname`: The short hostname of the public IP of the SAP
+  server. It defaults to `ansible_hostname`.
 
--   `sap_domain`: The DNS domain of the SAP server. It defaults to
-    `ansible_fqdn`.
+- `sap_domain`: The DNS domain of the SAP server. It defaults to
+  `ansible_fqdn`.
 
--   `sap_ip`: The IP address of the SAP server. It defaults to
-    `ansible_default_ipv4.address`.
+- `sap_ip`: The IP address of the SAP server. It defaults to
+  `ansible_default_ipv4.address`.
 
 The role is designed not to update a server, and to stop with an error
 message if something occurs that requires a reboot. The reason is to
@@ -328,7 +336,7 @@ correct. The role throws errors, but is not failing if DNS setup is not
 correct, provided that the required name resolution works with files.
 However, it is recommended to have proper DNS in production.
 
-### sap\_hana\_preconfigure
+### sap_hana_preconfigure
 
 The `sap_hana_preconfigure` role does all preconfiguration steps for SAP
 HANA, which are described in many applicable SAP Notes. The SAP Notes

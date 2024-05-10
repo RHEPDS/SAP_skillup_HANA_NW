@@ -1,3 +1,11 @@
+---
+layout: default
+title: Describe Ansible Concepts
+nav_order: 1
+has_children: true
+permalink: /
+---
+
 # Describing Ansible Concepts
 
 ## Introduction
@@ -79,18 +87,18 @@ inventory is the materials and the playbooks are the instructions.
 Playbooks are text files that are written in YAML format, and therefore
 have the following needs:
 
--   To start with three dashes (`---`)
+- To start with three dashes (`---`)
 
--   Proper indentation with spaces and **not** tabs
+- Proper indentation with spaces and **not** tabs
 
 These concepts are important:
 
--   **hosts**: The managed hosts to perform the tasks on
+- **hosts**: The managed hosts to perform the tasks on
 
--   **tasks**: The operations to perform by invoking Ansible modules and
-    passing them the necessary options
+- **tasks**: The operations to perform by invoking Ansible modules and
+  passing them the necessary options
 
--   **become**: Privilege escalation in playbooks
+- **become**: Privilege escalation in playbooks
 
 The ordering of the contents within a playbook is important, because
 Ansible executes plays and tasks in the order that they are presented.
@@ -119,12 +127,12 @@ An example playbook looks as follows:
 
 In this playbook:
 
--   A name is given for the play.
+- A name is given for the play.
 
--   The host to run against and privilege escalation are configured.
+- The host to run against and privilege escalation are configured.
 
--   A task is defined and named, here by using the "yum" module with the
-    needed options.
+- A task is defined and named, here by using the "yum" module with the
+  needed options.
 
 ### Ansible Variables
 
@@ -141,13 +149,13 @@ double curly braces.
 The recommended practice is to define variables in files in the
 `host_vars` and `group_vars` directories:
 
--   For example, to define variables for a group named `servers` that is
-    already defined in the inventory, create a YAML file named
-    `group_vars/servers` with the variable definitions.
+- For example, to define variables for a group named `servers` that is
+  already defined in the inventory, create a YAML file named
+  `group_vars/servers` with the variable definitions.
 
--   To define variables specifically for a `host1.example.com` host,
-    create the `host_vars/host1.example.com` file with the variable
-    definitions.
+- To define variables specifically for a `host1.example.com` host,
+  create the `host_vars/host1.example.com` file with the variable
+  definitions.
 
 Host variables take precedence over group variables. (More information
 about precedence can be found in the documentation.)
@@ -222,10 +230,10 @@ inactive tasks that are triggered only when explicitly invoked with the
 
 As a an example, consider a playbook with the following attributes:
 
--   It manages the Apache `httpd.conf` configuration file on all hosts
-    in the `webserver` group.
+- It manages the Apache `httpd.conf` configuration file on all hosts
+  in the `webserver` group.
 
--   It restarts Apache when the file changes.
+- It restarts Apache when the file changes.
 
 <!-- -->
 
@@ -248,11 +256,11 @@ As a an example, consider a playbook with the following attributes:
 
 So, what is new here?
 
--   The `notify` section calls the handler only when the copy task
-    changed the file.
+- The `notify` section calls the handler only when the copy task
+  changed the file.
 
--   The `handlers` section defines a task that is run only on
-    notification.
+- The `handlers` section defines a task that is run only on
+  notification.
 
 ### Ansible Templates
 

@@ -1,4 +1,12 @@
-# Cannot Be Blank
+---
+layout: default
+title: Setting up SAP HANA
+nav_order: 0
+has_children: true
+permalink: /
+---
+
+# Guided Exercise: Setting up SAP HANA
 
 In this exercise, you access and use the lab environment and install SAP
 HANA in parallel on both SAP HANA servers.
@@ -34,17 +42,17 @@ creating your Ansible playbooks in the future.
 
     With this configuration, you achieve the following outcomes:
 
-    -   The role is looking in the `/software/HANA_installation`
-        directory for the installation binaries.
+    - The role is looking in the `/software/HANA_installation`
+      directory for the installation binaries.
 
-    -   The role unpacks the HANA archive to the `/sap-hana-inst`
-        directory locally.
+    - The role unpacks the HANA archive to the `/sap-hana-inst`
+      directory locally.
 
-    -   The database password is set to `R3dh4t$123`.
+    - The database password is set to `R3dh4t$123`.
 
-    -   HANA is installed with SID `RHE` and instance number `00`.
+    - HANA is installed with SID `RHE` and instance number `00`.
 
-    -   The memory is limited to 38 GB in this installation.
+    - The memory is limited to 38 GB in this installation.
 
     Later in the course, you install S/4HANA Foundation on this HANA
     database, which writes only approximately 18 GB into the HANA
@@ -141,11 +149,11 @@ creating your Ansible playbooks in the future.
 
 To complete this exercise, take these steps:
 
--   Run the `lab` command on the `workstation` machine, to create the
-    files in this exercise.
+- Run the `lab` command on the `workstation` machine, to create the
+  files in this exercise.
 
--   Run the `ansible-playbook` command to install the HANA servers if
-    not successful previously, and complete the exercise.
+- Run the `ansible-playbook` command to install the HANA servers if
+  not successful previously, and complete the exercise.
 
 These steps are important to ensure that resources from previous
 exercises do not impact upcoming exercises.

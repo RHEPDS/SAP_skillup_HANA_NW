@@ -1,3 +1,11 @@
+---
+layout: default
+title: Introduction to the classroom environment
+nav_order: 0
+has_children: true
+permalink: /
+---
+
 # Introduction to the classroom environment
 
 In this exercise, you access and use the lab environment and browse the
