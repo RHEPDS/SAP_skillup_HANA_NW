@@ -1,0 +1,12 @@
+title: Technical Training: Skill up on SAP HANA and Netweaver
+description: After this course you understand SAP HANA and Netweaver and you know hoe to deploy it with Ansible
+url: "http://rhepds.github.io/SAP_skillup_HANA_NW"
+markdown: kramdown
+remote_theme: just-the-docs/just-the-docs
+logo: "img/rhepds.png"
+aux_links:
+  "Main Page":
+    - "//rhepds.github.io"
+  "Red Hat EMEA Partner":
+    - "//connect.redhat.com"
+aux_links_new_tab: true
