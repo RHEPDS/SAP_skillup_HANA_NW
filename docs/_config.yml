@@ -12,3 +12,4 @@ aux_links:
   "RH445 Training":
     - "https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D51277880"
 aux_links_new_tab: true
+search_enabled: false
