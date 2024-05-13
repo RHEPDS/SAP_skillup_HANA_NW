@@ -325,7 +325,7 @@ configuration file. With this method, do not change the first three
 lines. Adapt only the Product ID. This ID is also obtained from the
 configuration file.
 
-##  
+## Additional Information
 
 [Upstream sap_swpm Role
 Description](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md)

@@ -370,7 +370,7 @@ The purpose of these variables is identical to the
 Now you have an overview of the roles that prepare Red Hat Enterprise
 Linux to install SAP software.
 
-##  
+## Additional Information
 
 [Linux System Roles
 (Upstream)](https://galaxy.ansible.com/fedora/linux_system_roles)

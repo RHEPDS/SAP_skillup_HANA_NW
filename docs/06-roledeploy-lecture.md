@@ -61,7 +61,7 @@ placed somewhere else, then you must define the
 In production environments, define password variables in an Ansible
 vault file or as custom credentials in Ansible Controller.
 
-##  
+## Additional Information
 
 [Definition of Race
 Condition](https://en.wikipedia.org/wiki/Race_condition#In_software)

@@ -105,7 +105,7 @@ style="text-align: left;"><code>sap_ha_install_hana_hsr_oper_mode</code></td>
 </tbody>
 </table>
 
-##  
+## Additional Information
 
 [sap_ha_install_hana_hsr Role
 Documentation](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_ha_install_hana_hsr)

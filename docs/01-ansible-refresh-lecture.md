@@ -335,7 +335,7 @@ details, browse the project homepage at
 in [Automation
 Hub](https://console.redhat.com/ansible/automation-hub/?page_size=10&view_type=null&keywords=SAPhttps://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install)
 
-##  
+## Additional Information
 
 [Getting Started with
 Ansible](https://www.redhat.com/sysadmin/getting-started-ansible)

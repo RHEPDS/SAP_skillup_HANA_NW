@@ -560,8 +560,7 @@ whenever both nodes are available.
 This concludes the chapter on Configuring a Basic High Availability
 Cluster for SAP.
 
-_Configuring and Managing High Availability Clusters_,
-[](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/index)
+## Additional Information
+[Configuring and Managing High Availability Clusters](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/index)
 
-_Automating SAP HANA Scale-Up System Replication using the RHEL HA
-Add-On_, [](https://access.redhat.com/articles/3004101)
+[Automating SAP HANA Scale-Up System Replication using the RHEL HA Add-On](https://access.redhat.com/articles/3004101)
