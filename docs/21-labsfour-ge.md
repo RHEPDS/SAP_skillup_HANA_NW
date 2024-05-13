@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Setting up SAP S/4
-nav_order: 0
+nav_order: 21
 has_children: true
 permalink: /
 ---

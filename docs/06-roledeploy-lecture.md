@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Describing the SAP HANA Deployment
-nav_order: 0
+nav_order: 6
 has_children: true
 permalink: /
 ---

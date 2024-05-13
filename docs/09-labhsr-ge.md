@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Setting up the SAP HSR
-nav_order: 0
+nav_order: 9
 has_children: true
 permalink: /
 ---

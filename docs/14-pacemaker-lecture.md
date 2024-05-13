@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Configuring Pacemaker Cluster HA for SAP NetWeaver
-nav_order: 0
+nav_order: 14
 has_children: true
 permalink: /
 ---

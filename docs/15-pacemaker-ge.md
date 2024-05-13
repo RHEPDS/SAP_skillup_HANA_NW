@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Deploying and Configuring the Pacemaker Cluster
-nav_order: 0
+nav_order: 15
 has_children: true
 permalink: /
 ---

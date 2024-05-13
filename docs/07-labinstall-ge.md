@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Setting up SAP HANA
-nav_order: 0
+nav_order: 7
 has_children: true
 permalink: /
 ---

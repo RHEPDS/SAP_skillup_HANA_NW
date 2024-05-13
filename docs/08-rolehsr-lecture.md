@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Introducing the Concepts and Roles for SAP HANA System Replication
-nav_order: 0
+nav_order: 8
 has_children: true
 permalink: /
 ---

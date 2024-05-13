@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Verifying and Installing Ansible Collections for SAP Installation
-nav_order: 0
+nav_order: 4
 has_children: true
 permalink: /
 ---
