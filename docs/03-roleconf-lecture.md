@@ -11,16 +11,15 @@ nav_order: 3
 The installation of an SAP system can be divided into the following
 steps:
 
-1.  Provisioning of the servers
+1. Provisioning of the servers
 
-2.  Basic operating system configuration, which is often referred to as
-    Corporate Standard Build
+2. Basic operating system configuration, which is often referred to as Corporate Standard Build
 
-3.  Installation of SAP HANA database
+3. Installation of SAP HANA database
 
-4.  Installation of SAP NetWeaver-based application such as SAP S/4HANA
+4. Installation of SAP NetWeaver-based application such as SAP S/4HANA
 
-<img src="img/workflow.png" style="width:100.0%" />
+<img src="img/workflow.png" style="width:100.0%" alt="workflow image missing" />
 
 The server provisioning (step 1) is typically the most individual part
 for each customer in this workflow. For example, it could involve the
@@ -61,7 +60,7 @@ was installed in step 3.
 For installing SAP HANA, these roles from the following collections
 might be useful:
 
-1.  Linux System Roles Collection (`redhat.rhel_system_roles`)
+    Linux System Roles Collection (`redhat.rhel_system_roles`)
 
     - `rhel_system_roles.storage`,
       [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
@@ -76,7 +75,7 @@ might be useful:
       for complex network configurations, which are typical in SAP
       environments
 
-2.  SAP Installation Collections (`redhat.sap_install`)
+1. SAP Installation Collections (`redhat.sap_install`)
 
     - `sap_install.sap_general_preconfigure`,
       [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/sap_install/content/role/sap_general_preconfigure) -
@@ -93,7 +92,7 @@ might be useful:
 For installing SAP NetWeaver, these roles from the following collections
 might be useful:
 
-1.  Linux System Roles Collection (`redhat.rhel_system_roles`)
+1. Linux System Roles Collection (`redhat.rhel_system_roles`)
 
     - `rhel_system_roles.storage`,
       [](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhel_system_roles/content/role/storage) -
@@ -108,7 +107,7 @@ might be useful:
       for complex network configurations, which are typical in SAP
       environments
 
-2.  SAP Installation Collections (`redhat.sap_install` and
+2. SAP Installation Collections (`redhat.sap_install` and
     `community.sap_install`)
 
     - `sap_install.sap_general_preconfigure`,
