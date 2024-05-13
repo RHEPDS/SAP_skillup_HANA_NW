@@ -2,8 +2,6 @@
 layout: default
 title: Preparing Ansible Playbooks to Configure SAP Servers for SAP Installation
 nav_order: 5
-has_children: true
-permalink: /
 ---
 
 # Guided Exercise: Preparing Ansible Playbooks to Configure SAP Servers for SAP Installation

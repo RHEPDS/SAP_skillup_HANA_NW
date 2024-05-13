@@ -2,8 +2,6 @@
 layout: default
 title: Setting up SAP S/4
 nav_order: 21
-has_children: true
-permalink: /
 ---
 
 # Guided Exercise: Setting up SAP S/4

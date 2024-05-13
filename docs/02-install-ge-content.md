@@ -2,8 +2,6 @@
 layout: default
 title: Verifying Ansible Configuration on the Control Node
 nav_order: 2
-has_children: true
-permalink: /
 ---
 
 # Guided Exercise: Verifying Ansible Configuration on the Control Node

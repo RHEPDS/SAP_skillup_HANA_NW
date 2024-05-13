@@ -2,8 +2,6 @@
 layout: default
 title: Setting up SAP HANA
 nav_order: 7
-has_children: true
-permalink: /
 ---
 
 # Guided Exercise: Setting up SAP HANA
