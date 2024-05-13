@@ -20,7 +20,7 @@ steps:
 
 4.  Installation of SAP NetWeaver-based application such as SAP S/4HANA
 
-<img src="images/ansible/workflow.svg" style="width:100.0%" />
+<img src="img/workflow.png" style="width:100.0%" />
 
 The server provisioning (step 1) is typically the most individual part
 for each customer in this workflow. For example, it could involve the
