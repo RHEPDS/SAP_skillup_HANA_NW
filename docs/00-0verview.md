@@ -13,9 +13,10 @@ You need to deploy the lab from [RH445] in the partner training portal.
 The training is structured into four training days.
 Please pick the instructions from the menubar on the left
 
-You will find the training presentions [here](https://github.com/RHEPDS/SAP_skillup_HANA_NW/presenations)
+You will find the training presentions [here](https://github.com/RHEPDS/SAP_skillup_HANA_NW/presentations)
   
-You can report issues or request enhancement [here](https://github.com/RHEPDS/SAP_skillup_HANA_NW/issues)
+Please report issues or request enhancements [here](https://github.com/RHEPDS/SAP_skillup_HANA_NW/issues)
+
 ---
 
 [RH445]: https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D51277880
