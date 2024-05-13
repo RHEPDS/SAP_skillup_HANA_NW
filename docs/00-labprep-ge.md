@@ -2,6 +2,7 @@
 layout: default
 title: Introduction to the classroom environment
 nav_order: 0
+permalink: /
 ---
 
 # Introduction to the classroom environment
