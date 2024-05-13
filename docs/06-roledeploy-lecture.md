@@ -2,6 +2,7 @@
 layout: default
 title: Describing the SAP HANA Deployment
 nav_order: 6
+parent: Day 2
 ---
 
 # Describing the SAP HANA Deployment

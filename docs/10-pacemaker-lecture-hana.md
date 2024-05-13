@@ -2,6 +2,7 @@
 layout: default
 title: Configuring Pacemaker Cluster HA for SAP HANA Scale Up
 nav_order: 10
+parent: Day 2
 ---
 
 # Configuring a High Availability Cluster for SAP HANA Scale Up

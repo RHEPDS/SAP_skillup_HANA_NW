@@ -2,6 +2,7 @@
 layout: default
 title: Verifying and Installing Ansible Collections for SAP Installation
 nav_order: 4
+parent: Day 2
 ---
 
 # Guided Exercise: Verifying and Installing Ansible Collections for SAP Installation

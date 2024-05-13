@@ -2,6 +2,7 @@
 layout: default
 title: Setting up the SAP HSR
 nav_order: 9
+parent: Day 2
 ---
 
 # Guided Exercise: Setting up the SAP HSR

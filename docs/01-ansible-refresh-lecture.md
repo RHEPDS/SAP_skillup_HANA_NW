@@ -2,6 +2,7 @@
 layout: default
 title: Describe Ansible Concepts
 nav_order: 1
+parent: Day 1
 ---
 
 # Describing Ansible Concepts

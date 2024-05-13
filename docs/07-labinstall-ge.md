@@ -2,6 +2,7 @@
 layout: default
 title: Setting up SAP HANA
 nav_order: 7
+parent: Day 2
 ---
 
 # Guided Exercise: Setting up SAP HANA

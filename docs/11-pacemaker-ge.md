@@ -2,6 +2,7 @@
 layout: default
 title: Deploying and Configuring the Pacemaker Cluster
 nav_order: 11
+parent: Day 2
 ---
 
 # Guided Exercise: Deploying and Configuring the Pacemaker Cluster

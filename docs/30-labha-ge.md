@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Verifying the Configuration of HA Cluster
-nav_order: 22
+nav_order: 30   
+parent: Day 4
 ---
 
 # Verifying the Configuration of HA Cluster Managing SAP Resources

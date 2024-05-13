@@ -2,13 +2,8 @@
 layout: default
 title: Introduction to the classroom environment
 nav_order: 0
-permalink: /
+parent: Day 1
 ---
-
-# Technical enablement - skill up on SAP Netweaver and HANA Automation with Ansible
-
-Welcome to the lab guide for your partner training.
-You need to deploy the lab from [RH445] in the partner training portal.
 
 # Introduction to the classroom environment
 
@@ -94,7 +89,3 @@ exercise. This step is important to ensure that resources from previous
 exercises do not impact upcoming exercises.
 
     [student@workstation ~]$ lab finish ansible-prep
-
----
-
-[RH445]: https://training-lms.redhat.com/sso/saml/auth/rhopen?RelayState=deeplinkoffering%3D51277880

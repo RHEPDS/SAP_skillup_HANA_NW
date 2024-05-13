@@ -2,6 +2,7 @@
 layout: default
 title: Verifying Ansible Configuration on the Control Node
 nav_order: 2
+parent: Day 1
 ---
 
 # Guided Exercise: Verifying Ansible Configuration on the Control Node

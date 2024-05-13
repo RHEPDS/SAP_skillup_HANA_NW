@@ -2,6 +2,7 @@
 layout: default
 title: Introducing the Concepts and Roles for SAP HANA System Replication
 nav_order: 8
+parent: Day 2
 ---
 
 # Introducing the Concepts and Roles for SAP HANA System Replication

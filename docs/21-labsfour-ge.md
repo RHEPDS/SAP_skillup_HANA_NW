@@ -2,12 +2,15 @@
 layout: default
 title: Setting up SAP S/4
 nav_order: 21
+parent: Day 3
 ---
 
 # Guided Exercise: Setting up SAP S/4
 
 In this exercise, you access and use the lab environment, and install
-SAP S/4HANA on a NetWeaver server.
+a standalone SAP S/4HANA on a NetWeaver server.
+
+NOTE: You can skip this installation and continue with the more complex distributed setup, if you want.
 
 **Outcomes**
 
