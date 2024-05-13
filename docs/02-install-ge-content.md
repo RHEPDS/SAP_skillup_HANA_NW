@@ -5,12 +5,12 @@ nav_order: 2
 parent: Day 1
 ---
 
-# Guided Exercise: Verifying Ansible Configuration on the Control Node
+<!-- trunk-ignore(markdownlint/MD025) --># Guided Exercise: Verifying Ansible Configuration on the Control Node
 
 In this exercise, you access and use the lab environment and browse the
 available resources.
 
-**Outcomes**
+## Outcomes
 
 You verify the Ansible installation on the control node, and verify SSH
 access to the managed nodes.
@@ -23,7 +23,7 @@ creating your Ansible Playbooks in the future.
 
     [student@workstation ~]$ lab start ansible-prereq
 
-1.  Verify that Ansible 2.11 or later is installed and usable:
+1. Verify that Ansible 2.11 or later is installed and usable:
 
         [student@workstation ~]$ ansible --version
         ansible [core 2.12.2]
@@ -36,9 +36,9 @@ creating your Ansible Playbooks in the future.
           jinja version = 2.10.3
           libyaml = True
 
-2.  Verify that Ansible inventory setup for this environment is correct.
+2. Verify that Ansible inventory setup for this environment is correct.
 
-    1.  Verify that you can see all hosts:
+    1. Verify that you can see all hosts:
 
             [student@workstation ~]$ ansible all --list-hosts
               hosts (6):
@@ -49,8 +49,7 @@ creating your Ansible Playbooks in the future.
                 nodec.lab.example.com
                 noded.lab.example.com
 
-    2.  Use `ansible ping` to test the connections from your management
-        hosts to your managed nodes:
+    2. Use `ansible ping` to test the connections from your management hosts to your managed nodes:
 
             [student@workstation ~]$ ansible -m ping all
             nodec.lab.example.com | SUCCESS => {
@@ -96,7 +95,26 @@ creating your Ansible Playbooks in the future.
                 "ping": "pong"
             }
 
-**Finish**
+## Dowload the SAP Software into your environment
+
+We must not provide the SAP software installer bundles.
+Hence you need an SAP S-User with download permission to download the SAP software to the training enviroment. The download is automated for you.
+
+As the `student` user on the `workstation` machine, execute the
+following commands to download the SAP software to the training
+environment:
+
+    [student@workstation ~]$ git clone https://github.com/redhat-sap/RH445-download
+    [student@workstation ~] cd RH445-download
+    [student@workstation RH445-download] ./download-sap-media.sh
+
+Follow the instructions on the screen and enter your S-User and password.
+
+If you do not have an S-User/password to download the installer software.
+The above script lists the files you need to provide to the course environment.
+These files have to be provided on a server which can be reached from inside the course environment.
+
+## Finish
 
 On the `workstation` machine, use the `lab` command to complete this
 exercise. This step is important to ensure that resources from previous

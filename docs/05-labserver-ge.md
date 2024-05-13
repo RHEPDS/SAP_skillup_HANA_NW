@@ -15,6 +15,7 @@ available resources.
 You write a playbook so that all servers are ready to consume SAP HANA
 or SAP NetWeaver-based software.
 
+<!--
 As the `student` user on the `workstation` machine, execute the
 following commands to download the SAP software to the training
 environment:
@@ -24,6 +25,7 @@ environment:
     [student@workstation RH445-download] ./download-sap-media.sh
 
 Follow the instructions on the screen.
+-->
 
 As the `student` user on the `workstation` machine, use the `lab`
 command to prepare your system for this exercise.
