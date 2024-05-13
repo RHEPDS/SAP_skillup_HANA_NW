@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Deploying and Configuring the Pacemaker Cluster
-nav_order: 15
+nav_order: 11
 ---
 
 # Guided Exercise: Deploying and Configuring the Pacemaker Cluster
@@ -28,10 +28,10 @@ must use the same major version of Red Hat Enterprise Linux. Red Hat
 Enterprise Linux 8 clusters use Corosync 3.x for communication, although
 Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
 
-1.  After completing all the previous labs, do the following steps:
+1. After completing all the previous labs, do the following steps:
 
-    1.  Verify that the ansible collection community.sap_install is
-        installed in version 1.2.3
+    1. Verify that the ansible collection community.sap_install is
+       installed in version 1.2.3
 
             [student@workstation ~]$ ansible-galaxy collection list
             Collection               Version
@@ -49,11 +49,11 @@ Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
             community.sap_libs        1.1.0
             community.sap_operations  0.9.0
 
-    2.  Change to the `ansible-files` directory:
+    2. Change to the `ansible-files` directory:
 
             [student@workstation ~]$ cd ~/ansible-files
 
-    3.  Update the `group_vars/hanas` file with the following variables:
+    3. Update the `group_vars/hanas` file with the following variables:
 
             ## BEGIN pacemaker parameters
             sap_ha_pacemaker_cluster_system_roles_collection: 'redhat.rhel_system_roles'
@@ -84,7 +84,7 @@ Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
                   lanplus: 1
             ## END pacemaker parameters
 
-    4.  Create the playbook `setup-pacemaker.yml`:
+    4. Create the playbook `setup-pacemaker.yml`:
 
             [student@workstation roles]$ cd ~/ansible-files
             [student@workstation ansible-files]$ vim setup-pacemaker.yml
@@ -99,20 +99,20 @@ Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
               roles:
                 - community.sap_install.sap_ha_pacemaker_cluster
 
-    5.  Execute the playbook:
+    5. Execute the playbook:
 
             [student@workstation ansible-files]$ ansible-playbook setup-pacemaker.yml -v -K
             BECOME password: student
 
-2.  After the successful completion of the playbook, verify the cluster
+2. After the successful completion of the playbook, verify the cluster
     state.
 
-    1.  Log in to the `hana1` node as the root user with `redhat` as the
-        password:
+    1. Log in to the `hana1` node as the root user with `redhat` as the
+       password:
 
             [student@workstation ~]$ ssh root@hana1
 
-    2.  Verify the cluster status with the following command:
+    2. Verify the cluster status with the following command:
 
             [root@hana1 ~]# pcs status --full
             Cluster name: cluster1

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Configuring Pacemaker Cluster HA for SAP NetWeaver
-nav_order: 14
+title: Configuring Pacemaker Cluster HA for SAP HANA Scale Up
+nav_order: 10
 ---
 
-# Configuring a Basic High Availability Cluster for SAP Netweaver
+# Configuring a High Availability Cluster for SAP HANA Scale Up
 
-<!-- REWORK REQUIRED -->
+In this chapter you will learn the manual steps for an SAP HANA cluster setup on top of the working and running SAP HANA System Replication.
 
 ## Install the Node Software
 
@@ -405,8 +405,7 @@ tools such as SAP Management Console or SAP Landscape Virtualization
 Management that can use this address to query the status information
 about the SAP instance.
 
-For more information, see _Colocating Cluster Resources_,
-[](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/assembly_colocating-cluster-resources.adoc_configuring-and-managing-high-availability-clusters)
+For more information, see [Colocating Cluster Resources](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/assembly_colocating-cluster-resources.adoc_configuring-and-managing-high-availability-clusters)
 
 The resulting constraint should look as follows:
 
@@ -471,94 +470,7 @@ the platform where the cluster is running.
 The time is maximized when the second virtual IP resource is assigned to
 a node where a healthy SAP HANA instance is running.
 
-## Setting up HA for SAP NetWeaver
-
-**Create a resource for ASCS instance**
-
-- For ENSA1: When the installation and testing are complete according
-  to earlier chapters, you can integrate the SAP NetWeaver system into
-  the pacemaker cluster. Assuming that your underlying storage and
-  network environment as applicable are configured according to SAP
-  guidelines and are part of the cluster, then the following command
-  starts the SAP NetWeaver resources into the pacemaker cluster.
-
-<!-- -->
-
-    [root@node ~]# pcs resource create <sid>_ascs<InstanceNumber> SAPInstance \
-    > InstanceName="<SID>_ASCS<InstanceNumber>_rhascs" \
-    > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ASCS<InstanceNumber>_rhascs \
-    > AUTOMATIC_RECOVER=false meta resource-stickiness=5000 migration-threshold=1 \
-    > failure-timeout=60 --group <sid>_ASCS<InstanceNumber>_group \
-    > op monitor interval=20 on-fail=restart timeout=60 \
-    > op start interval=0 timeout=600 \
-    > op stop interval=0 timeout=600
-
-The `meta resource-stickiness=5000` value balances out the failover
-constraint with ERS, so the resource stays on the node where it started,
-and does not migrate around the cluster uncontrollably. The
-`migration-threshold=1` value ensures ASCS failover to another node when
-an issue is detected instead of restarting on the same node.
-
-- For ENSA2:
-
-      [root@node ~]# pcs resource create <sid>_ascs<InstanceNumber> SAPInstance \
-      > InstanceName="<SID>_ASCS<InstanceNumber>_s4ascs" \
-      > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ASCS<InstanceNumber>_s4ascs \
-      > AUTOMATIC_RECOVER=false \
-      > meta resource-stickiness=5000 \
-      > --group <sid>_ASCS<InstanceNumber>_group \
-      > op monitor interval=20 on-fail=restart timeout=60 \
-      > op start interval=0 timeout=600 \
-      > op stop interval=0 timeout=600
-
-  Add a resource stickiness value to the group to ensure that the ASCS
-  stays on a node if possible:
-
-      [root@node ~]# pcs resource meta <sid>_ASCS<InstanceNumber>_group \
-      > resource-stickiness=3000
-
-  Create a resource for an ERS instance
-  Create the ERS instance cluster resource.
-
-The `IS_ERS=true` attribute is mandatory for ENSA1 deployments. For more
-information about `IS_ERS`, see _How Does the IS_ERS Attribute Work on
-an SAP NetWeaver Cluster with Stand-alone Enqueue Server (ENSA1 and
-ENSA2)?_: [](https://access.redhat.com/solutions/5474031)
-
-- For ENSA1:
-
-      [root@node ~]# pcs resource create <sid>_ers<InstanceNumber> SAPInstance \
-      > InstanceName="<SID>_ERS<InstanceNumber>_rhers" \
-      > START_PROFILE=/sapmnt/<SID>/profile/<SID>_ERS<InstanceNumber>_rhers \
-      > AUTOMATIC_RECOVER=false IS_ERS=true --group rh2_ERS29_group \
-      > op monitor interval=20 on-fail=restart timeout=60 \
-      > op start interval=0 timeout=600 \
-      > op stop interval=0 timeout=600
-
-- For ENSA2:
-
-      [root@node ~]# pcs resource create s4h_ers29 SAPInstance \
-      > InstanceName="S4H_ERS29_s4ers" \
-      > START_PROFILE=/sapmnt/S4H/profile/S4H_ERS29_s4ers \
-      > AUTOMATIC_RECOVER=false \
-      > --group s4h_ERS29_group \
-      > op monitor interval=20 on-fail=restart timeout=60 \
-      > op start interval=0 timeout=600 \
-      > op stop interval=0 timeout=600
-
-**Create the required constraints**
-
-Create a colocation constraint for ASCS and ERS resource groups.
-
-Resource groups `<sid>_ASCS<InstanceNumber>_group` and
-`<sid>_ERS<InstanceNumber>_group` should avoid running on the same node
-whenever both nodes are available.
-
-    [root@node ~]# pcs constraint colocation add rh2_ERS29_group with \
-    > rh2_ASCS20_group -5000
-
-This concludes the chapter on Configuring a Basic High Availability
-Cluster for SAP.
+This concludes the chapter on configuring an SAP HANA Scale Up cluster.
 
 ## Additional Information
 [Configuring and Managing High Availability Clusters](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/index)
