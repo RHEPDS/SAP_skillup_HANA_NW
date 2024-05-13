@@ -1,9 +1,16 @@
 ---
 layout: default
+title: Home
+nav_order: 0
+has_children: true
+permalink: /
+---
+<!---
+layout: default
 title: skill up on SAP Netweaver and HANA Automation with Ansible
 nav_order: 0
 permalink: /
----
+--->
 
 # Technical enablement
 
