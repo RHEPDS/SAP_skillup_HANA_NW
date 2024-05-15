@@ -12,9 +12,9 @@ a standalone SAP S/4HANA on a NetWeaver server.
 
 NOTE: You can skip this installation and continue with the more complex distributed setup, if you want.
 
-**Outcomes**
+## Outcomes
 
-You write a playbook that installs SAP S/4HANA.
+You write a playbook that installs SAP S/4HANA with sistributed HA.
 
 As the `student` user on the `workstation` machine, use the `lab`
 command to prepare your system for this exercise.
@@ -25,12 +25,110 @@ creating your Ansible Playbooks in the future.
     [student@workstation ~]$ lab start sap-s4-install
 
 This process might take some time.
+It desinstalls S/4 HANA single node installation from previous step
 
-1.  Change to the `ansible-files` directory in your home directory:
+### Ensure all aliases for the cluster are distributed to all nodes
+
+For running SAP HANA in a cluster we need to define virtual ip adresses for these services in /etc/hosts.
+
+1. Change to the `ansible-files` directory in your home directory:
 
         [student@workstation ~]$ cd ~/ansible-files
 
-2.  Add the following content to the `group_vars/s4hanas` file:
+2. Create the file `group_vars/all` with the following content
+
+        # Virtual IP addresses
+        sap_service_vips:
+          - node_ip: 172.25.250.80
+            node_name: hana
+            state: present
+            alias_mode: overwrite
+          - node_ip: 172.25.250.81
+            node_name: s4ascs
+            state: present
+            alias_mode: overwrite
+          - node_ip: 172.25.250.82
+            node_name: s4ers
+            state: present
+            alias_mode: overwrite# Virtual IP addresses
+
+3. Create a playbook `update_host_aliases.yml` with the following content:
+
+         - name: Update host aliases
+           hosts: localhost,all
+           become: true
+
+           tasks:
+             - name: Update Hostaliases
+               ansible.builtin.include_role:
+                 name: community.sap_install.sap_maintain_etc_hosts
+               vars:
+                 sap_maintain_etc_hosts_list: "{{ sap_service_vips }}"
+
+    NOTE: you may need to install ansible.utils collection
+
+### Update the Ansible inventory
+
+2. Update your inventory to create dedicated groups for ASCS, ERS, PAS and AAS
+
+        [student@workstation ~]$ sudo vi /etc/ansible/hosts
+
+   Modify your inventory that it looks like this:
+
+        # ansible hosts file for RH455
+
+        [hanas]
+        hana1.lab.example.com
+        hana2.lab.example.com
+
+        [s4ascs]
+        nodea.lab.example.com
+
+        [s4ers]
+        nodeb.lab.example.com
+
+        [s4pas]
+        nodea.lab.example.com
+
+        [s4aas]
+        nodeb.lab.example.com
+        #nodec.lab.example.com
+        #noded.lab.example.com
+
+        [s4hanas:children]
+        s4ascs
+        s4ers
+        s4pas
+        s4aas
+
+3. Check that the groups contain the right servers:
+
+        [student@workstation ansible-files]$ ansible all --list-hosts
+          hosts (4):
+            hana1.lab.example.com
+            hana2.lab.example.com
+            nodea.lab.example.com
+            nodeb.lab.example.com
+        [student@workstation ansible-files]$ ansible s4hanas --list-hosts
+          hosts (2):
+            nodea.lab.example.com
+            nodeb.lab.example.com
+        [student@workstation ansible-files]$ ansible s4ascs --list-hosts
+          hosts (1):
+            nodea.lab.example.com
+        [student@workstation ansible-files]$ ansible s4ers --list-hosts
+          hosts (1):
+            nodeb.lab.example.com
+        [student@workstation ansible-files]$ ansible s4pas --list-hosts
+          hosts (1):
+            nodea.lab.example.com
+        [student@workstation ansible-files]$ ansible s4aas --list-hosts
+          hosts (1):
+            nodeb.lab.example.com
+
+
+=====
+3.  Add the following content to the `group_vars/s4hanas` file:
 
         ## BEGIN SAP S/4 install parameters
         # sap_swpm
@@ -91,7 +189,7 @@ This process might take some time.
 
     - Define the connection to the database.
 
-3.  Create the `install-s4.yml` playbook, to install SAP HANA on the
+4.  Create the `install-s4.yml` playbook, to install SAP HANA on the
     servers:
 
         ---
@@ -124,7 +222,7 @@ This process might take some time.
                 path: "{{ sap_swpm_software_path }}"
                 state: unmounted
 
-4.  Execute the `install-s4.yml` playbook:
+5.  Execute the `install-s4.yml` playbook:
 
         [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
         BECOME password: student
@@ -150,7 +248,7 @@ This process might take some time.
         [root@nodea ~]# tail -f \
         > $(cat /tmp/sapinst_instdir/.lastInstallationLocation)/sapinst.log
 
-5.  Verify that SAP S/4 is running:
+6.  Verify that SAP S/4 is running:
 
         [student@workstation ~]$ ssh nodea
         [student@nodea ~]$ sudo su - rheadm

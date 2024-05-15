@@ -326,7 +326,73 @@ configuration file. With this method, do not change the first three
 lines. Adapt only the Product ID. This ID is also obtained from the
 configuration file.
 
+## Distributed Installation of SAP Netweaver
+
+This section describes the SAP S/4HANA High-Availability Architecture.
+A typical setup for a High-Available SAP S/4HANA system will consist of 3 major components:
+
+- SAP ASCS and ERS application instances and cluster resources.
+- SAP application servers - Primary Application Server (PAS) and Additional Application Servers (AAS)
+- SAP HANA Database
+
+The process for configuring the S/4HANA high availability can be divided into three phases:
+
+- *Phase #1:* Preparing SAP S/4HANA application for clustering
+- *Phase #2:* Installing all instances of High Available SAP S/4HANA application on cluster
+- *Phase #3:* Configuring SAP Clustering via Pacemaker (RHEL) for fail overs
+
+The services that need to be clustered are ASCS and ERS. The concept of high availability in S/4HANA or any new SAP Product is based on Standalone Enqueue Server 2 (ENSA2). It is to be noted starting with ABAP Platform 1809, ENSA2 is installed by default and from ABAP Platform 2020 onwards, Standalone Enqueue Server 2 (and Enqueue Replicator 2 for high-availability scenarios) is the only available option.
+
+To understand all necessary details regarding the concept, implementation considerations, configuration, administration and monitoring of ENSA2, it is highly recommended to check SAP's standard documentation Standalone Enqueue Server 2.
+
+The S/4 HANA services need some shared directories and some instance specific directories in which the software is installed.
+For clustering it is important to understand that the directories should be based only on SAN LUN or NFS or else moving resource from one cluster to another will require a lot of manual tasks and workaround.
+An opinion from your System Admin or Linux Administrator will also help understanding if you need SAN LUN or NFS.
+
+The following directories have to be present on all Application Server nodes
+
+- `/usr/sap/`_SID_`/SYS`
+- `/usr/sap/trans`
+- `/sapmnt
+
+The following directories have to be present on the node that runs the particular service:
+
+- ASCS:          `/usr/sap/`_SID_`/ASCS`_##_
+- ERS:           `/usr/sap/`_SID_`/ERS`_##_
+- PAS/AAS D_##_: `/usr/sap/SID/D`_##_
+
+When installing SAP S/4 HANA or any other Netweaver based component in a distributed way or for a cluster you have to define virtual IP adresses for the following services
+
+- ASCS (s4ascs)
+- ERS (s4ers)
+
+ASCS and ERS should not be installed on the same host.
+The virtual IP adresses and the instance specific directories of ASCS and ERS will be managed as a cluster resource later on
+
+After this prework you can start installing the SAP S/4 HANA software:
+
+1. Install ASCS on nodea : ‘./sapinst SAPINST_USE_HOSTNAME=s4ascs’
+   - select SAP S/4HANA Server Foundation … ASCS Instance
+   - select SID & Instancenumber eg.SID S4D, Instance 01
+   - s4ascs is the hostname whch resolves to the virtual IP
+2. Install ERS on nodeb: ‘./sapinst SAPINST_USE_HOSTNAME=s4ers’
+   - select SAP S/4HANA Server Foundation …ERS Instance
+   - select SID & Instancenumber eg.SID S4D, Instance 02
+   - s4ers is the hostname whch resolves to the virtual IP
+3. Install Hana Client using `./sapinst SAPINST_USE_HOSTNAME=hana` (vip from previous inst) <!-- (on all nodes??/or any node) -->
+   - select SAP S/4HANA Server Foundation …Database Instance
+4. Install PAS Server on nodea: `./sapinst`
+   - SAP S/4HANA Server Foundation …Primary Applcation Server Instance
+5. Install AAS Server on nodeb and other nodes
+   - SAP S/4HANA Server Foundation Additional Applcation Server Instance
+
+
 ## Additional Information
 
-[Upstream sap_swpm Role
-Description](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md)
+[Upstream sap_swpm Role Description](https://github.com/sap-linuxlab/community.sap_install/blob/main/roles/sap_swpm/README.md)
+
+[BLOG: Setting Up S4/HANA Application for High Availability](https://community.sap.com/t5/enterprise-resource-planning-blogs-by-members/setting-up-s4-hana-application-for-high-availability/ba-p/13560119)
+
+[Standalone Enque Sever 2](https://help.sap.com/docs/ABAP_PLATFORM/cff8531bc1d9416d91bb6781e628d4e0/902412f09e134f5bb875adb6db585c92.html)
+
+[SAP System Directories](https://help.sap.com/doc/saphelp_snc700_ehp01/7.0.1/en-US/27/44f17a26a74a8abfd202c4f5dc9a0f/content.htm?no_cache=true)
