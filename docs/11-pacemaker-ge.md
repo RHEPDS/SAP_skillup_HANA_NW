@@ -7,7 +7,7 @@ parent: Day 2
 
 # Guided Exercise: Deploying and Configuring the Pacemaker Cluster
 
-**Outcomes**
+## Outcomes
 
 After completing this section, you should be able to install and start a
 basic high availability cluster for managing SAP HANA.
@@ -15,10 +15,12 @@ basic high availability cluster for managing SAP HANA.
 As the `student` user on the `workstation` machine, use the `lab`
 command to prepare your system for this exercise.
 
+<!--
 This command ensures that the environment is configured correctly for
 creating your Ansible Playbooks in the future.
 
     [student@workstation ~]$ lab start ansible-pacemaker
+-->
 
 You now configure a High Availability cluster to manage previously
 created HANA resources by using the latest cluster HA roles.
@@ -29,83 +31,131 @@ must use the same major version of Red Hat Enterprise Linux. Red Hat
 Enterprise Linux 8 clusters use Corosync 3.x for communication, although
 Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
 
-1. After completing all the previous labs, do the following steps:
+### Ensure all aliases for the cluster are distributed to all nodes
 
-    1. Verify that the ansible collection community.sap_install is
-       installed in version 1.2.3
+For running SAP HANA in a cluster we need to define virtual ip adresses for these services in /etc/hosts.
 
-            [student@workstation ~]$ ansible-galaxy collection list
-            Collection               Version
-            ------------------------ -------
-            ansible.posix            1.4.0
-            community.general        5.5.0
-            redhat.rhel_system_roles 1.16.2
-            redhat.sap_install       1.1.0
+1. Verify that the ansible collection community.sap_install is installed in version 1.4.0
 
-            # /home/student/.ansible/collections/ansible_collections
-            Collection                Version
-            ------------------------- -------
-            community.sap_install     1.2.3
-            community.sap_launchpad   1.0.0
-            community.sap_libs        1.1.0
-            community.sap_operations  0.9.0
+        [student@workstation ~]$ ansible-galaxy collection list
+        Collection               Version
+        ------------------------ -------
+        ansible.posix            1.4.0
+        community.general        5.5.0
+        redhat.rhel_system_roles 1.22.0
+        redhat.sap_install       1.1.0
 
-    2. Change to the `ansible-files` directory:
+        # /home/student/.ansible/collections/ansible_collections
+        Collection                Version
+        ------------------------- -------
+        community.sap_install     1.4.0
+        community.sap_launchpad   1.0.0
+        community.sap_libs        1.1.0
+        community.sap_operations  0.9.0
 
-            [student@workstation ~]$ cd ~/ansible-files
+2. Change to the `ansible-files` directory in your home directory:
 
-    3. Update the `group_vars/hanas` file with the following variables:
+        [student@workstation ~]$ cd ~/ansible-files
 
-            ## BEGIN pacemaker parameters
-            sap_ha_pacemaker_cluster_system_roles_collection: 'redhat.rhel_system_roles'
-            ha_cluster_cluster_name: cluster1
-            ha_cluster_hacluster_password: 'my_hacluster'
+3. Create the file `group_vars/all` with the following content
 
-            sap_hana_vip:
-              primary: 172.25.250.80
+        # Virtual IP addresses
+        sap_service_vips:
+          - node_ip: 172.25.250.80
+            node_name: hana
+            state: present
+            alias_mode: overwrite
+          - node_ip: 172.25.250.81
+            node_name: s4ascs
+            state: present
+            alias_mode: overwrite
+          - node_ip: 172.25.250.82
+            node_name: s4ers
+            state: present
+            alias_mode: overwrite# Virtual IP addresses
 
-            sap_ha_pacemaker_cluster_stonith_custom:
-              - name: "fence_hana1"
-                agent: "stonith:fence_ipmilan"
-                options:
-                  ip: bmc-hana1
-                  pcmk_host_list: hana1
-                  power_timeout: 180
-                  username: admin
-                  password: password
-                  lanplus: 1
-              - name: "fence_hana2"
-                agent: "stonith:fence_ipmilan"
-                options:
-                  ip: bmc-hana2
-                  pcmk_host_list: hana2
-                  power_timeout: 180
-                  username: admin
-                  password: password
-                  lanplus: 1
-            ## END pacemaker parameters
+4. Create a playbook `update_host_aliases.yml` with the following content:
 
-    4. Create the playbook `setup-pacemaker.yml`:
+         - name: Update host aliases
+           hosts: localhost,all
+           become: true
 
-            [student@workstation roles]$ cd ~/ansible-files
-            [student@workstation ansible-files]$ vim setup-pacemaker.yml
+           tasks:
+             - name: Update Hostaliases
+               ansible.builtin.include_role:
+                 name: community.sap_install.sap_maintain_etc_hosts
+               vars:
+                 sap_maintain_etc_hosts_list: "{{ sap_service_vips }}"
+
+    NOTE: you may need to install ansible.utils collection
+
+5. Execute the playbook:
+
+            [student@workstation ansible-files]$ ansible-playbook update_host_aliases.yml -v -K
+            BECOME password: student
+
+### Install the pacemaker cluster on the HANA servers
+
+1. Change to the `ansible-files` directory:
+
+        [student@workstation ~]$ cd ~/ansible-files
+
+2. Update the `group_vars/hanas` file with the following variables:
+
+        ## BEGIN pacemaker parameters
+        sap_ha_pacemaker_cluster_system_roles_collection: 'redhat.rhel_system_roles'
+        ha_cluster_cluster_name: cluster1
+        ha_cluster_hacluster_password: 'my_hacluster'
+
+        sap_ha_pacemaker_cluster_vip_hana_primary_ip_address: "172.25.250.80"
+
+        sap_ha_pacemaker_cluster_stonith_custom:
+          - name: "fence_hana1"
+            agent: "stonith:fence_ipmilan"
+            options:
+              ip: bmc-hana1
+              pcmk_host_list: hana1
+              power_timeout: 180
+              username: admin
+              password: password
+              lanplus: 1
+          - name: "fence_hana2"
+            agent: "stonith:fence_ipmilan"
+            options:
+              ip: bmc-hana2
+              pcmk_host_list: hana2
+              power_timeout: 180
+              username: admin
+              password: password
+              lanplus: 1
+        ## END pacemaker parameters
+
+3. Create the playbook `setup-pacemaker.yml`:
+
+        [student@workstation roles]$ cd ~/ansible-files
+        [student@workstation ansible-files]$ vim setup-pacemaker.yml
 
         Add this content
 
-            ---
-            - name: "03-D HA Cluster deployment on a 2-node cluster"
-              hosts: hanas
-              become: true
+        ---
+        - name: "03-D HA Cluster deployment on a 2-node cluster"
+          hosts: hanas
+          become: true
 
-              roles:
-                - community.sap_install.sap_ha_pacemaker_cluster
+          tasks:
+              - name: Execute Cluster Setup Role
+                ansible.builtin.include_role:
+                  name: community.sap_install.sap_ha_pacemaker_cluster
+                vars:
+                  sap_ha_pacemaker_cluster_system_roles_collection: redhat.rhel_system_roles
+                  sap_ha_pacemaker_cluster_vip_client_interface: eth0
 
-    5. Execute the playbook:
+4. Execute the playbook:
 
-            [student@workstation ansible-files]$ ansible-playbook setup-pacemaker.yml -v -K
-            BECOME password: student
+        [student@workstation ansible-files]$ ansible-playbook setup-pacemaker.yml -v -K
+        BECOME password: student
 
-2. After the successful completion of the playbook, verify the cluster
+5. After the successful completion of the playbook, verify the cluster
     state.
 
     1. Log in to the `hana1` node as the root user with `redhat` as the
@@ -178,6 +228,6 @@ Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
               pacemaker: active/enabled
               pcsd: active/enabled
 
-**Finish**
+## Finish
 
 You have configured a basic High Availability cluster for SAP HANA.

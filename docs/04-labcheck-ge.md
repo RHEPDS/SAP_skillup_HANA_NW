@@ -10,7 +10,7 @@ parent: Day 2
 In this exercise, you install the collections from Ansible Galaxy that
 you need to prepare and install SAP software.
 
-**Outcomes**
+## Outcomes
 
 You install the necessary Ansible collections to deploy a RHEL systems
 landscape for SAP HANA, SAP S/4HANA, or NetWeaver.
@@ -42,8 +42,8 @@ creating your Ansible Playbooks in the future.
             ------------------------ -------
             ansible.posix            1.4.0
             community.general        5.5.0
-            redhat.rhel_system_roles 1.16.2
-            redhat.sap_install       1.0.2
+            redhat.rhel_system_roles 1.22.0
+            redhat.sap_install       1.1.0
 
     2.  Create a file named `requirements.yml` in the
         `${HOME}/ansible-files/collections` directory, with the
@@ -51,10 +51,11 @@ creating your Ansible Playbooks in the future.
 
             ---
             collections:
+                    - name: ansible.utils
                     - name: community.sap_libs
                       version: 1.1.0
                     - name: community.sap_install
-                      version: 1.2.3
+                      version: 1.4.0
                     - name: community.sap_operations
                       version: 0.9.0
                     - name: https://github.com/sap-linuxlab/community.sap_launchpad.git
@@ -94,14 +95,15 @@ creating your Ansible Playbooks in the future.
         ------------------------ -------
         ansible.posix            1.4.0
         community.general        5.5.0
-        redhat.rhel_system_roles 1.16.2
+        redhat.rhel_system_roles 1.22.0
         redhat.sap_install       1.1.0
 
         # /home/student/.ansible/collections/ansible_collections
         Collection               Version
         ------------------------ -------
-        community.sap_install    1.2.3
-        community.sap_launchpad  1.0.0
+        ansible.utils            4.1.0
+        community.sap_install    1.4.0
+        community.sap_launchpad  1.1.0
         community.sap_libs       1.1.0
         community.sap_operations 0.9.0
 
@@ -110,7 +112,7 @@ creating your Ansible Playbooks in the future.
     Ansible Automation Platform, then you can use `ansible-builder` to
     create an EE that includes these collections.
 
-**Finish**
+## Finish
 
 On the `workstation` machine, use the `lab` command to complete this
 exercise. This step is important to ensure that resources from previous

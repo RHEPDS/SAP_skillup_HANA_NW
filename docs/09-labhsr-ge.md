@@ -11,11 +11,12 @@ In this exercise, you access and use the lab environment, and install
 SAP HANA system replication on the previously installed SAP HANA
 servers.
 
-**Outcomes**
+## Outcomes
 
 You write a playbook that installs SAP HANA system replication from the
 `hana1` to the `hana2` server.
 
+<!--
 As the `student` user on the `workstation` machine, use the `lab`
 command to prepare your system for this exercise.
 
@@ -23,6 +24,8 @@ This command ensures that the environment is configured correctly for
 creating your Ansible Playbooks in the future.
 
     [student@workstation ~]$ lab start sap-hana-hsr
+-->
+## Installation steps
 
 1.  Change to the `ansible-files` directory in your home directory:
 
@@ -298,6 +301,7 @@ creating your Ansible Playbooks in the future.
     If the overall system replication status is `ACTIVE`, the system
     replication is configured correctly.
 
+<!--
 **Finish**
 
 To complete this exercise, take these steps:
@@ -314,3 +318,4 @@ exercises do not impact upcoming exercises.
     [student@workstation ~]$ lab finish sap-hana-hsr
     [student@workstation ~]$ ansible-playbook setup-hsr.yml -v -K
     BECOME password: student
+-->

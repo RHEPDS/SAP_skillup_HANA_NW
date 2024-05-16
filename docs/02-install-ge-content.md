@@ -23,17 +23,34 @@ creating your Ansible Playbooks in the future.
 
     [student@workstation ~]$ lab start ansible-prereq
 
-1. Verify that Ansible 2.11 or later is installed and usable:
+To update the lab environment to the latest working release, please do the following:
+
+As the `student` user on the `workstation` machine, execute the
+following commands to download the SAP software to the training
+environment:
+
+    [student@workstation ~]$ git clone https://github.com/redhat-sap/RH445-download
+    [student@workstation ~] cd RH445-download/tools
+    [student@workstation tools] ./update-lab.sh
+    ===============
+    Warning: [...]
+    ===============
+    Press Ctrl-C ...
+    BECOME password: student
+    Activation Key: ask-your-trainer
+    Enter a Nickname: anything here
+
+1. Verify that Ansible 2.14 or later is installed and usable:
 
         [student@workstation ~]$ ansible --version
-        ansible [core 2.12.2]
-          config file = /etc/ansible/ansible.cfg
+        ansible [core 2.15.3]
+          config file = /home/student/.ansible.cfg
           configured module search path = ['/home/student/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-          ansible python module location = /usr/lib/python3.8/site-packages/ansible
+          ansible python module location = /usr/lib/python3.11/site-packages/ansible
           ansible collection location = /home/student/.ansible/collections:/usr/share/ansible/collections
           executable location = /usr/bin/ansible
-          python version = 3.8.12 (default, Sep 16 2021, 10:46:05) [GCC 8.5.0 20210514 (Red Hat 8.5.0-3)]
-          jinja version = 2.10.3
+          python version = 3.11.5 (main, Sep 22 2023, 15:34:29) [GCC 8.5.0 20210514 (Red Hat 8.5.0-20)] (/usr/bin/python3.11)
+          jinja version = 3.1.2
           libyaml = True
 
 2. Verify that Ansible inventory setup for this environment is correct.
@@ -104,8 +121,7 @@ As the `student` user on the `workstation` machine, execute the
 following commands to download the SAP software to the training
 environment:
 
-    [student@workstation ~]$ git clone https://github.com/redhat-sap/RH445-download
-    [student@workstation ~] cd RH445-download
+    [student@workstation ~] cd ~/RH445-download
     [student@workstation RH445-download] ./download-sap-media.sh
 
 Follow the instructions on the screen and enter your S-User and password.

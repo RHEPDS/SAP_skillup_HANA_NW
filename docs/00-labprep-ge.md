@@ -10,7 +10,7 @@ parent: Day 1
 In this exercise, you access and use the lab environment and browse the
 available resources.
 
-**Outcomes**
+## Outcomes
 
 You will be familiar with the servers in the lab environment, and should
 be able to log in and browse the available resources.

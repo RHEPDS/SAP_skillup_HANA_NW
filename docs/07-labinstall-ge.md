@@ -10,7 +10,7 @@ parent: Day 2
 In this exercise, you access and use the lab environment and install SAP
 HANA in parallel on both SAP HANA servers.
 
-**Outcomes**
+## Outcomes
 
 You write a playbook that installs SAP HANA on the `hana1` and `hana2`
 servers, which are defined in the `hanas` inventory group.
@@ -144,7 +144,8 @@ creating your Ansible playbooks in the future.
 
     4.  Repeat the steps 5.1 - 5.3 on `hana2`
 
-**Finish**
+<!--
+## Finish
 
 To complete this exercise, take these steps:
 
@@ -160,3 +161,4 @@ exercises do not impact upcoming exercises.
     [student@workstation ansible-files]$ lab finish sap-hana-install
     [student@workstation ansible-files]$ ansible-playbook install-sap-hana.yml -v -K
     BECOME password: student
+-->

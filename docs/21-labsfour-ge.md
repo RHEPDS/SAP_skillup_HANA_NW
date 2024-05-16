@@ -65,7 +65,7 @@ This process might take some time.
 
         # HDB Instance Parameters
         # For dual host installation, change the db_host to appropriate value
-        sap_swpm_db_host: "hana1"
+        sap_swpm_db_host: "hana10"
         sap_swpm_db_sid: RHE
         sap_swpm_db_instance_nr: "00"
         ## END SAP S/4 install parameters
