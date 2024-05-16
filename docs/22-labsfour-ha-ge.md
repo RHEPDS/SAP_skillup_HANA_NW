@@ -486,6 +486,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 3. Create a playbook `install-s4-ha-phase1.yml` with the following content:
 
+  {% raw %}
   ```yaml
   ---
   # Ansible Playbook for SAP S/4HANA Distributed HA installation
@@ -603,6 +604,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             - rsync
           state: present
     ```
+    {% endraw %}
 
 4.  Execute the `install-s4-ha-phase1.yml` playbook:
 
@@ -610,27 +612,11 @@ You can find more sophisticated playbooks on the [project source page](https://g
         BECOME password: student
         ...output omitted...
 
-    NOTE: After the swpm installation starts, you see the following
-    message:
-
-        TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
-        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (1000 retries left).
-        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (999 retries left).
-
-    These messages occur because the installation is started
-    asynchronously, and Ansible probes and waits until the installation
-    is successful. It is useful to display the installation log on the
-    managed node to during this output.
-
-    To display the installation log run the following commands:
-
-        [student@workstation ansible-files]$ ssh nodea
-        [student@nodea ~]$ sudo -i
-        [root@nodea ~]# tail -f \
-        > $(cat /tmp/sapinst_instdir/.lastInstallationLocation)/sapinst.log
-
+### Phase 1: Install ASCS
+    
 5. Create and execute the playbook install-s4-ha-phase2-ascs.yml
 
+  {% raw %}
   ```yaml
   - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
     hosts: s4ascs
@@ -665,14 +651,40 @@ You can find more sophisticated playbooks on the [project source page](https://g
           path: "{{ sap_swpm_software_path }}"
           state: unmounted
     ```
+    {% endraw %}
+
+    2. Execute Playbook install-s4-ha-phase2-ascs.yml
 
     ```bash
-    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase2*
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase2-ascs.yaml
     BECOME password: student
     ... output omitted ...
     ```
 
+    NOTE: After the swpm installation starts, you see the following
+    message:
+
+        TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
+        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (1000 retries left).
+        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (999 retries left).
+
+    These messages occur because the installation is started
+    asynchronously, and Ansible probes and waits until the installation
+    is successful. It is useful to display the installation log on the
+    managed node to during this output.
+
+    To display the installation log run the following commands:
+
+        [student@workstation ansible-files]$ ssh nodea
+        [student@nodea ~]$ sudo -i
+        [root@nodea ~]# tail -f \
+        > $(cat /tmp/sapinst_instdir/.lastInstallationLocation)/sapinst.log
+
+### Phase 3: Install ERS
+
 7. Create and execute the playbook install-s4-ha-phase3-ers.yml
+
+    {% raw %}
     ```yaml
     - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
       hosts: s4ers
@@ -707,15 +719,21 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
       ```
+      {% endraw %}
 
-      ```bash
-      [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase3*
-      BECOME password: student
-      ... output omitted ...
-      ```
+2. Execute Playbook install-s4-ha-phase3-ers.yml
+
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase3-ers.yml
+    BECOME password: student
+    ... output omitted ...
+    ```
+
+### Phase 4: Configure Pacemaker ASCS/ERS Cluster
 
 8. Create and execute the playbook install-s4-ha-phase4-cluster.yml
 
+    
     ```yaml
     - name: Configure High Availability using ABAP Central Services (ASCS) and Enqueue Replication Service (ERS) with Standalone Enqueue Server 2 (ENSA2)
       hosts: s4ers,s4ascs
