@@ -20,18 +20,22 @@ command to prepare your system for this exercise.
 This command ensures that the environment is configured correctly for
 creating your Ansible Playbooks in the future.
 
-    [student@workstation ~]$ lab start sap-s4-install
+```bash
+[student@workstation ~]$ lab start sap-s4-install
+```
 
 This process might take some time.
 It desinstalls S/4 HANA single node installation from previous step
 
 ### Update the Ansible inventory
 
-1. Update your inventory to create dedicated groups for ASCS, ERS, PAS and AAS
+1.  Update your inventory to create dedicated groups for ASCS, ERS, PAS and AAS
 
-        [student@workstation ~]$ sudo vi /etc/ansible/hosts
+    ```bash
+    [student@workstation ~]$ sudo vi /etc/ansible/hosts
+    ```
 
-   Modify your inventory that it looks like this:
+    Modify your inventory that it looks like this:
 
     ```yaml
     # ansible hosts file for RH455
@@ -59,7 +63,7 @@ It desinstalls S/4 HANA single node installation from previous step
     s4aas
     ```
 
-2. Check that the groups contain the right servers:
+2.  Check that the groups contain the right servers:
 
     ```bash
     [student@workstation ansible-files]$ ansible all --list-hosts
@@ -606,7 +610,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ```
     {% endraw %}
 
-4.  Execute the `install-s4-ha-phase1.yml` playbook:
+4.  Execute the playbook `install-s4-ha-phase1.yml`:
 
         [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
         BECOME password: student
@@ -614,7 +618,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 2: Install ASCS
     
-1.  Create and execute the playbook install-s4-ha-phase2-ascs.yml
+1.  Create the playbook `install-s4-ha-phase2-ascs.yml` with the following content:
 
     {% raw %}
     ```yaml
@@ -653,7 +657,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ```
     {% endraw %}
 
-2.  Execute Playbook install-s4-ha-phase2-ascs.yml
+2.  Execute Playbook `install-s4-ha-phase2-ascs.yml`:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase2-ascs.yaml
@@ -682,7 +686,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 3: Install ERS
 
-1.  Create and execute the playbook install-s4-ha-phase3-ers.yml
+1.  Create the playbook `install-s4-ha-phase3-ers.yml`with the following content:
 
     {% raw %}
     ```yaml
@@ -721,7 +725,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ```
     {% endraw %}
 
-2. Execute Playbook install-s4-ha-phase3-ers.yml
+2. Execute Playbook `install-s4-ha-phase3-ers.yml`:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase3-ers.yml
@@ -731,7 +735,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 4: Configure Pacemaker ASCS/ERS Cluster
 
-1.  Create and execute the playbook install-s4-ha-phase4-cluster.yml
+1.  Create the playbook `install-s4-ha-phase4-cluster.yml`with the following content:
     
     ```yaml
     - name: Configure High Availability using ABAP Central Services (ASCS) and Enqueue Replication Service (ERS) with Standalone Enqueue Server 2 (ENSA2)
@@ -817,7 +821,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 5:Load Database
 
-1.  Create and execute the playbook install-s4-ha-phase5-dbload.yml
+1.  Create the playbook `install-s4-ha-phase5-dbload.yml`:
 
     {% raw %}
     ```yaml
@@ -866,7 +870,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 6: Install PAS
 
-1.  Create and execute the playbook `install-s4-ha-phase6-pas.yml`
+1.  Create the playbook `install-s4-ha-phase6-pas.yml` with the following content: 
 
     {% raw %}
     ```yaml
@@ -914,7 +918,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 7: (optional) Install AAS
 
-1.  Create and execute the playbook `install-s4-ha-phase7-aas.yml`
+1.  Create the playbook `install-s4-ha-phase7-aas.yml` with the following content:
 
     {% raw %}
     ```yaml
@@ -965,14 +969,16 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 12.  Verify that SAP S/4 is running on the PAS:
 
-        [student@workstation ~]$ ssh nodec
-        [student@nodec ~]$ sudo su - rheadm
-        [sudo] password for student: student
-        Last login: Di Sep  6 11:38:52 EDT 2022 on pts/0
-        nodea:rheadm 5> R3trans -d rheadm
-        This is R3trans version 6.26 (release 785 - 25.11.21 - 11:06:00 including rjh702 ).
-        unicode enabled version
-        R3trans finished (0000).
+    ```bash
+    [student@workstation ~]$ ssh nodec
+    [student@nodec ~]$ sudo su - rheadm
+    [sudo] password for student: student
+    Last login: Di Sep  6 11:38:52 EDT 2022 on pts/0
+    nodea:rheadm 5> R3trans -d rheadm
+    This is R3trans version 6.26 (release 785 - 25.11.21 - 11:06:00 including rjh702 ).
+    unicode enabled version
+    R3trans finished (0000).
+    ```
 
     If the return value is 0, then everything is fine.
 
