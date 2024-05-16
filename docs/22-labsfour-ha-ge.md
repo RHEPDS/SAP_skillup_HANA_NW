@@ -33,6 +33,7 @@ It desinstalls S/4 HANA single node installation from previous step
 
    Modify your inventory that it looks like this:
 
+        ```yaml
         # ansible hosts file for RH455
 
         [hanas]
@@ -56,9 +57,12 @@ It desinstalls S/4 HANA single node installation from previous step
         s4ers
         s4pas
         s4aas
+        ```
 
-5. Check that the groups contain the right servers:
+2. Check that the groups contain the right servers:
 
+
+        ```bash
         [student@workstation ansible-files]$ ansible all --list-hosts
           hosts (4):
             hana1.lab.example.com
@@ -83,10 +87,9 @@ It desinstalls S/4 HANA single node installation from previous step
         [student@workstation ansible-files]$ ansible s4aas --list-hosts
           hosts (1):
             noded.lab.example.com
+        ```
 
 NOTE: This is one variant, another would be to create this dynamically inside the playbook.
-
-### Ensure VIPs and Mountpoints for the cluster are pre-set
 
 For running SAP Netweaver in a cluster we need to define virtual ip adresses for ASCS and ERS services in /etc/hosts. We already have created those in the HANA cluster session.
 
@@ -103,12 +106,15 @@ The installation of the netweaver cluster is much more complex to setup than a H
 Although we could write a single playbook for all these tasks, we do it step by step for a better understanding.
 You can find more sophisticated playbooks on the [project source page](https://github.com/sap-linuxlab/ansible.playbooks_for_sap).
 
+### Phase 1: Enable VIPs, ephemral and common mountpoints
+
 1. Change to the `ansible-files` directory in your home directory:
 
         [student@workstation ~]$ cd ~/ansible-files
 
 2. Create or extend the file `group_vars/s4hanas` with the following content
 
+        ```yaml
         ### If the hostname setup is not configured correctly
         #   you need set sap_ip and sap_domain.
         #   we use the full qualified domain name in the inventory
@@ -456,7 +462,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
               username: admin
               password: password
               lanplus: 1
-
+        ```
     With this configuration, you achieve the following outcomes:
 
     - You install S4HANA 2021 Foundation in this exercise, because it loads only approximately 16 GB into the HANA database, instead of approximately 80 GB for the full ERP system. The Foundation has only the basic routines, without application software.
