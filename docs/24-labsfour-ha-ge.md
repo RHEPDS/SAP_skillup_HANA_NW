@@ -64,6 +64,7 @@ It desinstalls S/4 HANA single node installation from previous step
     ```
   
   **Info!** You might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are to small that we need to split that.
+  {: notice--info}
 
 2.  Check that the groups contain the right servers:
 
@@ -95,6 +96,7 @@ It desinstalls S/4 HANA single node installation from previous step
     ```
 
 **Notice!** This is one variant, another would be to create this dynamically inside the playbook.
+{: .notice}
 
 For running SAP Netweaver in a cluster we need to define virtual ip adresses for ASCS and ERS services in /etc/hosts. We already have created those in the HANA cluster session.
 
@@ -667,17 +669,21 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ... output omitted ...
     ```
 
+    <div class="notice--info">
     **Notice!** After the swpm installation starts, you see the following
     message:
 
-        TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
-        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (1000 retries left).
-        FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (999 retries left).
+    ```bash
+    TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
+    FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (1000 retries left).
+    FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (999 retries left).
+    ```
 
     These messages occur because the installation is started
     asynchronously, and Ansible probes and waits until the installation
     is successful. It is useful to display the installation log on the
     managed node to during this output.
+    </div>
 
     To display the installation log run the following commands:
 
