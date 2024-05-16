@@ -814,122 +814,150 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ... output omitted ...
     ```
 
+### Phase 5:Load Database
+
 9. Create and execute the playbook install-s4-ha-phase5-dbload.yml
-       - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
-         hosts: s4pas
-         become: true
-         any_errors_fatal: true
-         max_fail_percentage: 0
-         tasks:
-           - name: ensure software mountpoint exists
-             ansible.builtin.file:
-                path: "{{ sap_swpm_software_path }}"
-                state: directory
-                mode: '0755'
-       
-           - name: Ensure SAP software directory is mounted
-             ansible.posix.mount:
-               src: "utility:{{ sap_swpm_software_path }}"
-               path: "{{ sap_swpm_software_path }}"
-               opts: rw
-               boot: no
-               fstype: nfs
-               state: mounted
-       
-           - name: Execute Ansible Role sap_swpm
-             ansible.builtin.include_role:
-               name: community.sap_install.sap_swpm
-             vars:
-               sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_pas_dbload_ha"
-               sap_swpm_virtual_hostname: "{{ sap_swpm_pas_instance_hostname }}"
-       
-           - name: Ensure SAP software directory is unmounted
-             mount:
-               path: "{{ sap_swpm_software_path }}"
-               state: unmounted
-       
- 
-        [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase5*
-        BECOME password: student
-        ... output omitted ...
 
-10. Create and execute the playbook install-s4-ha-phase6-pas.yml
-       - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
-         hosts: s4pas
-         become: true
-         any_errors_fatal: true
-         max_fail_percentage: 0
-         tasks:
-           - name: ensure software mountpoint exists
-             ansible.builtin.file:
-                path: "{{ sap_swpm_software_path }}"
-                state: directory
-                mode: '0755'
-       
-           - name: Ensure SAP software directory is mounted
-             ansible.posix.mount:
-               src: "utility:{{ sap_swpm_software_path }}"
-               path: "{{ sap_swpm_software_path }}"
-               opts: rw
-               boot: no
-               fstype: nfs
-               state: mounted
-       
-           - name: Execute Ansible Role sap_swpm
-             ansible.builtin.include_role:
-               name: community.sap_install.sap_swpm
-             vars:
-               sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_pas"
-               sap_swpm_virtual_hostname: "{{ sap_swpm_pas_instance_hostname }}"
-       
-           - name: Ensure SAP software directory is unmounted
-             mount:
-               path: "{{ sap_swpm_software_path }}"
-               state: unmounted
-       
- 
-        [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase6*
-        BECOME password: student
-        ... output omitted ...
+    {% raw %}
+    ```yaml
+    - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
+      hosts: s4pas
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      tasks:
+        - name: ensure software mountpoint exists
+          ansible.builtin.file:
+            path: "{{ sap_swpm_software_path }}"
+            state: directory
+            mode: '0755'
 
-11. Create and execute the playbook install-s4-ha-phase7-aas.yml
-       - name:  Ansible Play for SAP NetWeaver AAS
-         hosts: s4aas
-         become: true
-         any_errors_fatal: true
-         max_fail_percentage: 0
-         tasks:
-           - name: ensure software mountpoint exists
-             ansible.builtin.file:
-                path: "{{ sap_swpm_software_path }}"
-                state: directory
-                mode: '0755'
-       
-           - name: Ensure SAP software directory is mounted
-             ansible.posix.mount:
-               src: "utility:{{ sap_swpm_software_path }}"
-               path: "{{ sap_swpm_software_path }}"
-               opts: rw
-               boot: no
-               fstype: nfs
-               state: mounted
-       
-           - name: Execute Ansible Role sap_swpm
-             ansible.builtin.include_role:
-               name: community.sap_install.sap_swpm
-             vars:
-               sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_aas"
-               sap_swpm_virtual_hostname: "{{ sap_swpm_aas_instance_hostname }}"
-       
-           - name: Ensure SAP software directory is unmounted
-             mount:
-               path: "{{ sap_swpm_software_path }}"
-               state: unmounted
-       
+        - name: Ensure SAP software directory is mounted
+          ansible.posix.mount:
+            src: "utility:{{ sap_swpm_software_path }}"
+            path: "{{ sap_swpm_software_path }}"
+            opts: rw
+            boot: no
+            fstype: nfs
+            state: mounted
+
+        - name: Execute Ansible Role sap_swpm
+          ansible.builtin.include_role:
+            name: community.sap_install.sap_swpm
+          vars:
+            sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_pas_dbload_ha"
+            sap_swpm_virtual_hostname: "{{ sap_swpm_pas_instance_hostname }}"
+
+        - name: Ensure SAP software directory is unmounted
+          mount:
+            path: "{{ sap_swpm_software_path }}"
+            state: unmounted
+      ```
+      {% endraw %}
+
+2. Execute playbook `install-s4-ha-phase5-dbload.yml`
  
-        [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase7*
-        BECOME password: student
-        ... output omitted ...
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase5*
+    BECOME password: student
+    ... output omitted ...
+    ```
+### Phase 6: Install PAS
+
+10. Create and execute the playbook `install-s4-ha-phase6-pas.yml`
+
+    {% raw %}
+    ```yaml
+    - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
+      hosts: s4pas
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      tasks:
+        - name: ensure software mountpoint exists
+          ansible.builtin.file:
+            path: "{{ sap_swpm_software_path }}"
+            state: directory
+            mode: '0755'
+
+        - name: Ensure SAP software directory is mounted
+          ansible.posix.mount:
+            src: "utility:{{ sap_swpm_software_path }}"
+            path: "{{ sap_swpm_software_path }}"
+            opts: rw
+            boot: no
+            fstype: nfs
+            state: mounted
+
+        - name: Execute Ansible Role sap_swpm
+          ansible.builtin.include_role:
+            name: community.sap_install.sap_swpm
+          vars:
+            sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_pas"
+            sap_swpm_virtual_hostname: "{{ sap_swpm_pas_instance_hostname }}"
+
+        - name: Ensure SAP software directory is unmounted
+          mount:
+            path: "{{ sap_swpm_software_path }}"
+            state: unmounted
+    ```
+2. Execute playbook `install-s4-ha-phase6-pas.yml`
+
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase6*
+    BECOME password: student
+    ... output omitted ...
+    ````
+
+### Phase 7: (optional) Install AAS
+
+11. Create and execute the playbook `install-s4-ha-phase7-aas.yml`
+
+    {% raw %}
+    ```yaml
+    - name:  Ansible Play for SAP NetWeaver AAS
+      hosts: s4aas
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      tasks:
+        - name: ensure software mountpoint exists
+          ansible.builtin.file:
+            path: "{{ sap_swpm_software_path }}"
+            state: directory
+            mode: '0755'
+
+        - name: Ensure SAP software directory is mounted
+          ansible.posix.mount:
+            src: "utility:{{ sap_swpm_software_path }}"
+            path: "{{ sap_swpm_software_path }}"
+            opts: rw
+            boot: no
+            fstype: nfs
+            state: mounted
+
+        - name: Execute Ansible Role sap_swpm
+          ansible.builtin.include_role:
+            name: community.sap_install.sap_swpm
+          vars:
+            sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_aas"
+            sap_swpm_virtual_hostname: "{{ sap_swpm_aas_instance_hostname }}"
+
+        - name: Ensure SAP software directory is unmounted
+          mount:
+            path: "{{ sap_swpm_software_path }}"
+            state: unmounted
+    ```
+
+2. Execute playbook `install-s4-ha-phase7-as.yml`:
+
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase7-aas.yml
+    BECOME password: student
+    ... output omitted ...
+    ````
+
+### Test that SAP is running as expected
 
 12.  Verify that SAP S/4 is running on the PAS:
 
