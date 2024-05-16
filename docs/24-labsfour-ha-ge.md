@@ -63,8 +63,7 @@ It desinstalls S/4 HANA single node installation from previous step
     s4aas
     ```
   
-  > [!NOTE]
-  > You might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are to small that we need to split that.
+  **Info!** You might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are to small that we need to split that.
 
 2.  Check that the groups contain the right servers:
 
@@ -95,7 +94,7 @@ It desinstalls S/4 HANA single node installation from previous step
         noded.lab.example.com
     ```
 
-NOTE: This is one variant, another would be to create this dynamically inside the playbook.
+**Notice!** This is one variant, another would be to create this dynamically inside the playbook.
 
 For running SAP Netweaver in a cluster we need to define virtual ip adresses for ASCS and ERS services in /etc/hosts. We already have created those in the HANA cluster session.
 
@@ -668,7 +667,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ... output omitted ...
     ```
 
-    NOTE: After the swpm installation starts, you see the following
+    **Notice!** After the swpm installation starts, you see the following
     message:
 
         TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
