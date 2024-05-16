@@ -909,6 +909,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+    {% endraw %}
 
 2. Execute playbook `install-s4-ha-phase6-pas.yml`:
 
