@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Setting up SAP S/4 distributed HA
-nav_order: 22
+nav_order: 24
 parent: Day 3
 ---
 
@@ -62,7 +62,9 @@ It desinstalls S/4 HANA single node installation from previous step
     s4pas
     s4aas
     ```
-
+  
+  NOTE: you might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are to small that we need to split that.
+  
 2.  Check that the groups contain the right servers:
 
     ```bash

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Configuring Pacemaker Cluster HA for SAP NetWeaver
-nav_order: 24
+nav_order: 22
 parent: Day 3
 ---
 
