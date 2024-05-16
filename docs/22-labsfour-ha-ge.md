@@ -107,11 +107,11 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 1: Enable VIPs, ephemral and common mountpoints
 
-1. Change to the `ansible-files` directory in your home directory:
+1.  Change to the `ansible-files` directory in your home directory:
 
         [student@workstation ~]$ cd ~/ansible-files
 
-2. Create or extend the file `group_vars/s4hanas` with the following content
+2.  Create or extend the file `group_vars/s4hanas` with the following content
 
     {% raw %}
     ```yaml
@@ -484,125 +484,125 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
     - Define the VIPs, cluster configurations and fencing
 
-3. Create a playbook `install-s4-ha-phase1.yml` with the following content:
+3.  Create a playbook `install-s4-ha-phase1.yml` with the following content:
 
-  {% raw %}
-  ```yaml
-  ---
-  # Ansible Playbook for SAP S/4HANA Distributed HA installation
+    {% raw %}
+    ```yaml
+    ---
+    # Ansible Playbook for SAP S/4HANA Distributed HA installation
 
-  # Use include_role / include_tasks inside Ansible Task block, instead of using roles declaration or Task block with import_roles.
-  # This ensures Ansible Roles, and the tasks within, will be parsed in sequence instead of parsing at Playbook initialisation.
+    # Use include_role / include_tasks inside Ansible Task block, instead of using roles declaration or Task block with import_roles.
+    # This ensures Ansible Roles, and the tasks within, will be parsed in sequence instead of parsing at Playbook initialisation.
 
-  ## Temporary IP and FS setup for ASCS and ERS
-  - name: Add temporary IP to ASCS and mount directories
-    hosts: s4ascs
-    become: true
-    any_errors_fatal: true
-    max_fail_percentage: 0
-    vars:
-      ip_cidr_prefix: 24
-    tasks:
-      - name: Add ASCS service ip temporary
-        command: 'ip address add {{ sap_ha_pacemaker_cluster_vip_nwas_abap_ascs_ip_address }}/{{ ip_cidr_prefix }} brd + dev {{ sap_ha_pacemaker_cluster_vip_client_interface }}'
-        register: __ipstate
-        changed_when: __ipstate.rc == 0
-        failed_when: __ipstate.rc != 0 and __ipstate.rc != 2
+    ## Temporary IP and FS setup for ASCS and ERS
+    - name: Add temporary IP to ASCS and mount directories
+      hosts: s4ascs
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      vars:
+        ip_cidr_prefix: 24
+      tasks:
+        - name: Add ASCS service ip temporary
+          command: 'ip address add {{ sap_ha_pacemaker_cluster_vip_nwas_abap_ascs_ip_address }}/{{ ip_cidr_prefix }} brd + dev {{ sap_ha_pacemaker_cluster_vip_client_interface }}'
+          register: __ipstate
+          changed_when: __ipstate.rc == 0
+          failed_when: __ipstate.rc != 0 and __ipstate.rc != 2
 
-      - name: Ensure ASCS directory exists
-        ansible.builtin.file:
-          path: "/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
-          state: directory
-          owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
-          group: "{{ sap_swpm_sapsys_gid | d('root') }}"
-          mode: '0775'
+        - name: Ensure ASCS directory exists
+          ansible.builtin.file:
+            path: "/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
+            state: directory
+            owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
+            group: "{{ sap_swpm_sapsys_gid | d('root') }}"
+            mode: '0775'
 
-      - name: Mount ASCS filesystem via nfs
-        ansible.posix.mount:
-          path: "/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
-          src: "{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
-          fstype: nfs
-          state: mounted
+        - name: Mount ASCS filesystem via nfs
+          ansible.posix.mount:
+            path: "/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
+            src: "{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }}"
+            fstype: nfs
+            state: mounted
 
-      # Only necessary if mount state ephemeral not available
-      - name: Remove fstab entry for ASCS mount
-        ansible.builtin.lineinfile:
-          path: /etc/fstab
-          state: absent
-          regexp: '^{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }} .*$'
+        # Only necessary if mount state ephemeral not available
+        - name: Remove fstab entry for ASCS mount
+          ansible.builtin.lineinfile:
+            path: /etc/fstab
+            state: absent
+            regexp: '^{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ASCS{{ sap_swpm_ascs_instance_nr }} .*$'
 
-  - name: Add temporary IP to ERS and mount directories
-    hosts: s4ers
-    become: true
-    any_errors_fatal: true
-    max_fail_percentage: 0
-    vars:
-      ip_cidr_prefix: 24
+    - name: Add temporary IP to ERS and mount directories
+      hosts: s4ers
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      vars:
+        ip_cidr_prefix: 24
 
-    tasks:
-      - name: Add ERS service ip temporary
-        command: 'ip address add {{ sap_ha_pacemaker_cluster_vip_nwas_abap_ers_ip_address }}/{{ ip_cidr_prefix }} brd + dev {{ sap_ha_pacemaker_cluster_vip_client_interface }}'
-        register: __ipstate
-        changed_when: __ipstate.rc == 0
-        failed_when: __ipstate.rc != 0 and __ipstate.rc != 2
+      tasks:
+        - name: Add ERS service ip temporary
+          command: 'ip address add {{ sap_ha_pacemaker_cluster_vip_nwas_abap_ers_ip_address }}/{{ ip_cidr_prefix }} brd + dev {{ sap_ha_pacemaker_cluster_vip_client_interface }}'
+          register: __ipstate
+          changed_when: __ipstate.rc == 0
+          failed_when: __ipstate.rc != 0 and __ipstate.rc != 2
 
-      - name: Ensure ERS directory exists
-        ansible.builtin.file:
-          path: "/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
-          state: directory
-          owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
-          group: "{{ sap_swpm_sapsys_gid | d('root') }}"
-          mode: '0775'
+        - name: Ensure ERS directory exists
+          ansible.builtin.file:
+            path: "/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
+            state: directory
+            owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
+            group: "{{ sap_swpm_sapsys_gid | d('root') }}"
+            mode: '0775'
 
-      - name: Mount ERS filesystem via nfs
-        ansible.posix.mount:
-          path: "/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
-          src: "{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
-          fstype: nfs
-          state: mounted
+        - name: Mount ERS filesystem via nfs
+          ansible.posix.mount:
+            path: "/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
+            src: "{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }}"
+            fstype: nfs
+            state: mounted
 
-      - name: Remove fstab entry for ERS mount
-        ansible.builtin.lineinfile:
-          path: /etc/fstab
-          state: absent
-          regexp: '^{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }} .*$'
+        - name: Remove fstab entry for ERS mount
+          ansible.builtin.lineinfile:
+            path: /etc/fstab
+            state: absent
+            regexp: '^{{ sap_nwas_shared_mount }}/usr/sap/{{ sap_swpm_sid }}/ERS{{ sap_swpm_ers_instance_nr }} .*$'
 
-  #### VM storage filesystem setup ####
-  - name: Hosts shared storage setup
-    hosts: s4hanas
-    become: true
-    any_errors_fatal: true
-    max_fail_percentage: 0
-    vars:
-      shared_paths:
-        - /usr/sap/{{ sap_swpm_sid }}/SYS
-        - /usr/sap/trans
-        - /sapmnt
-    tasks:
-      - name: Ensure mountpoints for shared paths exist
-        # Content suggestion provided by Ansible Lightspeed
-        ansible.builtin.file:
-          path: "{{ item }}"
-          state: directory
-          owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
-          group: "{{ sap_swpm_sapsys_gid | d('root') }}"
-          mode: '0775'
-        loop: "{{ shared_paths |flatten(levels=1) }}"
+    #### VM storage filesystem setup ####
+    - name: Hosts shared storage setup
+      hosts: s4hanas
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      vars:
+        shared_paths:
+          - /usr/sap/{{ sap_swpm_sid }}/SYS
+          - /usr/sap/trans
+          - /sapmnt
+      tasks:
+        - name: Ensure mountpoints for shared paths exist
+          # Content suggestion provided by Ansible Lightspeed
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: directory
+            owner: "{{ sap_swpm_sidadm_uid | d('root') }}"
+            group: "{{ sap_swpm_sapsys_gid | d('root') }}"
+            mode: '0775'
+          loop: "{{ shared_paths |flatten(levels=1) }}"
 
-      - name: Ensure filesystems for shared paths are mounted
-        # Content suggestion provided by Ansible Lightspeed
-        ansible.posix.mount:
-          path: "{{ item }}"
-          src: "{{ sap_nwas_shared_mount + item }}"
-          fstype: nfs
-          state: mounted
-        loop: "{{ shared_paths |flatten(levels=1) }}"
+        - name: Ensure filesystems for shared paths are mounted
+          # Content suggestion provided by Ansible Lightspeed
+          ansible.posix.mount:
+            path: "{{ item }}"
+            src: "{{ sap_nwas_shared_mount + item }}"
+            fstype: nfs
+            state: mounted
+          loop: "{{ shared_paths |flatten(levels=1) }}"
 
-      - name: Install rsync
-        ansible.builtin.package:
-          name:
-            - rsync
-          state: present
+        - name: Install rsync
+          ansible.builtin.package:
+            name:
+              - rsync
+            state: present
     ```
     {% endraw %}
 
@@ -612,48 +612,48 @@ You can find more sophisticated playbooks on the [project source page](https://g
         BECOME password: student
         ...output omitted...
 
-### Phase 1: Install ASCS
+### Phase 2: Install ASCS
     
-5. Create and execute the playbook install-s4-ha-phase2-ascs.yml
+1.  Create and execute the playbook install-s4-ha-phase2-ascs.yml
 
-  {% raw %}
-  ```yaml
-  - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
-    hosts: s4ascs
-    become: true
-    any_errors_fatal: true
-    max_fail_percentage: 0
-    tasks:
-      - name: ensure software mountpoint exists
-        ansible.builtin.file:
-          path: "{{ sap_swpm_software_path }}"
-          state: directory
-          mode: '0755'
+    {% raw %}
+    ```yaml
+    - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
+      hosts: s4ascs
+      become: true
+      any_errors_fatal: true
+      max_fail_percentage: 0
+      tasks:
+        - name: ensure software mountpoint exists
+          ansible.builtin.file:
+            path: "{{ sap_swpm_software_path }}"
+            state: directory
+            mode: '0755'
 
-      - name: Ensure SAP software directory is mounted
-        ansible.posix.mount:
-          src: "utility:{{ sap_swpm_software_path }}"
-          path: "{{ sap_swpm_software_path }}"
-          opts: rw
-          boot: no
-          fstype: nfs
-          state: mounted
+        - name: Ensure SAP software directory is mounted
+          ansible.posix.mount:
+            src: "utility:{{ sap_swpm_software_path }}"
+            path: "{{ sap_swpm_software_path }}"
+            opts: rw
+            boot: no
+            fstype: nfs
+            state: mounted
 
-      - name: Execute Ansible Role sap_swpm
-        ansible.builtin.include_role:
-          name: community.sap_install.sap_swpm
-        vars:
-          sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_ascs_ha"
-          sap_swpm_virtual_hostname: "{{ sap_swpm_ascs_instance_hostname }}"
+        - name: Execute Ansible Role sap_swpm
+          ansible.builtin.include_role:
+            name: community.sap_install.sap_swpm
+          vars:
+            sap_swpm_templates_product_input: "sap_s4hana_2021_distributed_nwas_ascs_ha"
+            sap_swpm_virtual_hostname: "{{ sap_swpm_ascs_instance_hostname }}"
 
-      - name: Ensure SAP software directory is unmounted
-        mount:
-          path: "{{ sap_swpm_software_path }}"
-          state: unmounted
+        - name: Ensure SAP software directory is unmounted
+          mount:
+            path: "{{ sap_swpm_software_path }}"
+            state: unmounted
     ```
     {% endraw %}
 
-    2. Execute Playbook install-s4-ha-phase2-ascs.yml
+2.  Execute Playbook install-s4-ha-phase2-ascs.yml
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase2-ascs.yaml
@@ -682,7 +682,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 3: Install ERS
 
-7. Create and execute the playbook install-s4-ha-phase3-ers.yml
+1.  Create and execute the playbook install-s4-ha-phase3-ers.yml
 
     {% raw %}
     ```yaml
@@ -718,8 +718,8 @@ You can find more sophisticated playbooks on the [project source page](https://g
           mount:
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
-      ```
-      {% endraw %}
+    ```
+    {% endraw %}
 
 2. Execute Playbook install-s4-ha-phase3-ers.yml
 
@@ -731,8 +731,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Phase 4: Configure Pacemaker ASCS/ERS Cluster
 
-8. Create and execute the playbook install-s4-ha-phase4-cluster.yml
-
+1.  Create and execute the playbook install-s4-ha-phase4-cluster.yml
     
     ```yaml
     - name: Configure High Availability using ABAP Central Services (ASCS) and Enqueue Replication Service (ERS) with Standalone Enqueue Server 2 (ENSA2)
@@ -808,15 +807,17 @@ You can find more sophisticated playbooks on the [project source page](https://g
             sap_ha_pacemaker_cluster_nwas_abap_ers_sapinstance_start_profile_string: "/sapmnt/{{ sap_swpm_sid }}/profile/{{ sap_swpm_sid }}_ERS{{ sap_swpm_ers_instance_nr }}_{{ sap_swpm_ers_instance_hostname }}"
     ```
 
+2. Execute playbook `install-s4-ha-phase4-cluster.yml`:
+
     ```bash
-    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase4*
+    [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase4-cluster.yml
     BECOME password: student
     ... output omitted ...
     ```
 
 ### Phase 5:Load Database
 
-9. Create and execute the playbook install-s4-ha-phase5-dbload.yml
+1.  Create and execute the playbook install-s4-ha-phase5-dbload.yml
 
     {% raw %}
     ```yaml
@@ -852,8 +853,8 @@ You can find more sophisticated playbooks on the [project source page](https://g
           mount:
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
-      ```
-      {% endraw %}
+    ```
+    {% endraw %}
 
 2. Execute playbook `install-s4-ha-phase5-dbload.yml`
  
@@ -862,9 +863,10 @@ You can find more sophisticated playbooks on the [project source page](https://g
     BECOME password: student
     ... output omitted ...
     ```
+
 ### Phase 6: Install PAS
 
-10. Create and execute the playbook `install-s4-ha-phase6-pas.yml`
+1.  Create and execute the playbook `install-s4-ha-phase6-pas.yml`
 
     {% raw %}
     ```yaml
@@ -901,17 +903,18 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
-2. Execute playbook `install-s4-ha-phase6-pas.yml`
+
+2. Execute playbook `install-s4-ha-phase6-pas.yml`:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase6*
     BECOME password: student
     ... output omitted ...
-    ````
+    ```
 
 ### Phase 7: (optional) Install AAS
 
-11. Create and execute the playbook `install-s4-ha-phase7-aas.yml`
+1.  Create and execute the playbook `install-s4-ha-phase7-aas.yml`
 
     {% raw %}
     ```yaml
@@ -948,14 +951,15 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+    {% endraw %}
 
-2. Execute playbook `install-s4-ha-phase7-as.yml`:
+2.  Execute playbook `install-s4-ha-phase7-as.yml`:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook -v -K install-s4-ha-phase7-aas.yml
     BECOME password: student
     ... output omitted ...
-    ````
+    ```
 
 ### Test that SAP is running as expected
 
