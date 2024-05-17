@@ -63,7 +63,7 @@ It desinstalls S/4 HANA single node installation from previous step
     s4aas
     ```
   
-  **Info!** You might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are to small that we need to split that.
+  **Info!** You might have expected that we install PAS and AAS on top of ASCS and ERS. Unfortunately the servers are too small that we need to split that.
   {: notice--info}
 
 2.  Check that the groups contain the right servers:
