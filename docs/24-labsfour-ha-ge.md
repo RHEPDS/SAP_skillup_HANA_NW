@@ -669,7 +669,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     ... output omitted ...
     ```
 
-    <div class="notice--info">
+
     **Notice!** After the swpm installation starts, you see the following
     message:
 
@@ -683,7 +683,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
     asynchronously, and Ansible probes and waits until the installation
     is successful. It is useful to display the installation log on the
     managed node to during this output.
-    </div>
+    
 
     To display the installation log run the following commands:
 

@@ -66,51 +66,55 @@ environment:
                 nodec.lab.example.com
                 noded.lab.example.com
 
-    2. Use `ansible ping` to test the connections from your management hosts to your managed nodes:
+    2.  Use `ansible ping` to test the connections from your management hosts to your managed nodes:
 
-            [student@workstation ~]$ ansible -m ping all
-            nodec.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
-            hana1.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
-            nodeb.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
-            nodea.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
-            hana2.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
-            noded.lab.example.com | SUCCESS => {
-                "ansible_facts": {
-                    "discovered_interpreter_python": "/usr/libexec/platform-python"
-                },
-                "changed": false,
-                "ping": "pong"
-            }
+        {% raw %}
+        ```bash
+        [student@workstation ~]$ ansible -m ping all
+        nodec.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        hana1.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        nodeb.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        nodea.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        hana2.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        noded.lab.example.com | SUCCESS => {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/libexec/platform-python"
+            },
+            "changed": false,
+            "ping": "pong"
+        }
+        ```
+        {% endraw %}
 
 ## Dowload the SAP Software into your environment
 

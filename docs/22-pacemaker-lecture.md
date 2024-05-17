@@ -282,6 +282,9 @@ This concludes the chapter on Configuring a Basic High Availability
 Cluster for SAP.
 
 ## Additional Information
+
 [Configuring and Managing High Availability Clusters](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/configuring_and_managing_high_availability_clusters/index)
 
 [Automating SAP HANA Scale-Up System Replication using the RHEL HA Add-On](https://access.redhat.com/articles/3004101)
+
+[Sysadmin Blog: How to set up a Pacemaker cluster for high availability Linux](https://www.redhat.com/sysadmin/rhel-pacemaker-cluster)

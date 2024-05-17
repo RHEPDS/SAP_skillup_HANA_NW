@@ -166,34 +166,38 @@ following storage volumes:
 An example variable configuration for a 128 GB system might look as
 follows:
 
-    storage_pools:
+{% raw %}
+```yaml
+storage_pools:
+      - name: sap
+        disks:
+          - sdb
+          - sdc
+          - sdd
+          - sde
+          - sdf
+        volumes:
+          - name: data
+            size: "128 GiB"
+            mount_point: "/hana/data"
+            fs_type: xfs
+            state: present
+          - name: log
+            size: "64 GiB"
+            mount_point: "/hana/log"
+            fs_type: xfs
+            state: present
+          - name: shared
+            size: "128 GiB"
+            mount_point: "/hana/shared"
+            fs_type: xfs
+            state: present
           - name: sap
-            disks:
-              - sdb
-              - sdc
-              - sdd
-              - sde
-              - sdf
-            volumes:
-              - name: data
-                size: "128 GiB"
-                mount_point: "/hana/data"
-                fs_type: xfs
-                state: present
-              - name: log
-                size: "64 GiB"
-                mount_point: "/hana/log"
-                fs_type: xfs
-                state: present
-              - name: shared
-                size: "128 GiB"
-                mount_point: "/hana/shared"
-                fs_type: xfs
-                state: present
-              - name: sap
-                size: "50 GiB"
-                mount_point: "/usr/sap"
-                state: present
+            size: "50 GiB"
+            mount_point: "/usr/sap"
+            state: present
+```
+{% endraw % }
 
 For initial installations, it can be useful to set the
 `storage_safe_mode` variable to `false`. In that case, existing
@@ -207,10 +211,14 @@ such as `chrony` or `ntpd`.
 
 The following example configures the `chrony` time server:
 
-    timesync_ntp_servers:
-          - hostname: 0.rhel.pool.ntp.org
-            iburst: yes
-    timesync_ntp_provider: chrony
+{% raw %}
+```yaml
+timesync_ntp_servers:
+      - hostname: 0.rhel.pool.ntp.org
+        iburst: yes
+timesync_ntp_provider: chrony
+```
+{% endraw %}
 
 ### rhel_system_roles.network
 
@@ -228,50 +236,54 @@ networks or VLANs for the following purposes:
 
 An example variable configuration might look as follows:
 
-    network_provider: nm
-    network_connections:
-      - name: admin
-        interface_name: eth0
-        #persistent_state: present  # default
-        type: ethernet
-        autoconnect: yes
-        mac: "00:00:5e:00:53:5d"
-        ip:
-          dhcp4: yes
+{% raw %}
+```yaml
+network_provider: nm
+network_connections:
+- name: admin
+  interface_name: eth0
+  #persistent_state: present  # default
+  type: ethernet
+  autoconnect: yes
+  mac: "00:00:5e:00:53:5d"
+  ip:
+    dhcp4: yes
 
-      # Create a bond profile, which is the parent of VLAN.
-      - name: prod2
-        state: up
-        type: bond
-        interface_name: bond2
-        ip:
-          dhcp4: no
-          auto6: no
-        bond:
-          mode: active-backup
-          miimon: 110
+# Create a bond profile, which is the parent of VLAN.
+- name: prod2
+  state: up
+  type: bond
+  interface_name: bond2
+  ip:
+    dhcp4: no
+    auto6: no
+  bond:
+    mode: active-backup
+    miimon: 110
 
-      # enslave an ethernet to the bond
-      - name: prod2-slave1
-        state: up
-        type: ethernet
-        interface_name: eth1
-        master: prod2
+  # enslave an ethernet to the bond
+  - name: prod2-slave1
+    state: up
+    type: ethernet
+    interface_name: eth1
+    master: prod2
 
-      # on top of it, create a VLAN with ID 100 and static
-      # addressing
-      - name: prod2.100
-        state: up
-        type: vlan
-        parent: prod2
-        vlan_id: 100
-        ip:
-          address:
-            - "192.0.2.72/24"
-          auto6: no
+  # on top of it, create a VLAN with ID 100 and static
+  # addressing
+  - name: prod2.100
+    state: up
+    type: vlan
+    parent: prod2
+    vlan_id: 100
+    ip:
+      address:
+        - "192.0.2.72/24"
+      auto6: no
 
 
-    network_allow_restart: yes
+network_allow_restart: yes
+```
+{% endraw %}
 
 You might add another interface to the bond or a more detailed IP
 configuration. The concept should be clear by now.
