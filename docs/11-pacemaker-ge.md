@@ -31,12 +31,11 @@ must use the same major version of Red Hat Enterprise Linux. Red Hat
 Enterprise Linux 8 clusters use Corosync 3.x for communication, although
 Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
 
-<!--
 ### Ensure all aliases for the cluster are distributed to all nodes
 
 For running SAP HANA in a cluster we need to define virtual ip adresses for these services in /etc/hosts.
 
-1. Verify that the ansible collection community.sap_install is installed in version 1.4.0
+1.  Verify that the ansible collection community.sap_install is installed in version 1.4.0
 
     ```bash
     [student@workstation ~]$ ansible-galaxy collection list
@@ -55,14 +54,14 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
     community.sap_libs        1.1.0
     community.sap_operations  0.9.0
     ```
-<!--
-2. Change to the `ansible-files` directory in your home directory:
+
+2.  Change to the `ansible-files` directory in your home directory:
 
     ```bash
     [student@workstation ~]$ cd ~/ansible-files
     ```
 
-3. Create the file `group_vars/all` with the following content
+3.  Create the file `group_vars/all` with the following content
 
     {% raw % }
 
@@ -85,7 +84,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 
     {% endraw %}
 
-4. Create a playbook `update_host_aliases.yml` with the following content:
+4.  Create a playbook `update_host_aliases.yml` with the following content:
 
     {% raw %}
 
@@ -106,7 +105,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 
     NOTE: you may need to install ansible.utils collection
 
-5. Execute the playbook:
+5.  Execute the playbook:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook update_host_aliases.yml -v -K
@@ -115,21 +114,21 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 
 ### Install the pacemaker cluster on the HANA servers
 
-1. Change to the `ansible-files` directory:
+1.  Change to the `ansible-files` directory:
 
     ```bash
     [student@workstation ~]$ cd ~/ansible-files
     ```
 
-2. Update the `group_vars/hanas` file with the following variables:
+2.  Update the `group_vars/hanas` file with the following variables:
 
     {% raw %}
 
     ```yaml
     ## BEGIN pacemaker parameters
-    sap_ha_pacemaker_cluster_system_roles_collection: 'redhat.rhel_system_roles'
+    sap_ha_pacemaker_cluster_system_roles_collection: "redhat.rhel_system_roles"
     ha_cluster_cluster_name: cluster1
-    ha_cluster_hacluster_password: 'my_hacluster'
+    ha_cluster_hacluster_password: "my_hacluster"
 
     sap_ha_pacemaker_cluster_vip_hana_primary_ip_address: "172.25.250.80"
 
@@ -157,7 +156,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 
     {% endraw %}
 
-3. Create the playbook `setup-pacemaker.yml`:
+3.  Create the playbook `setup-pacemaker.yml`:
 
     ```bash
     [student@workstation roles]$ cd ~/ansible-files
@@ -175,32 +174,34 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
       become: true
 
       tasks:
-          - name: Execute Cluster Setup Role
-            ansible.builtin.include_role:
-              name: community.sap_install.sap_ha_pacemaker_cluster
-            vars:
-              sap_ha_pacemaker_cluster_system_roles_collection: redhat.rhel_system_roles
-              sap_ha_pacemaker_cluster_vip_client_interface: eth0
+        - name: Execute Cluster Setup Role
+          ansible.builtin.include_role:
+            name: community.sap_install.sap_ha_pacemaker_cluster
+          vars:
+            sap_ha_pacemaker_cluster_system_roles_collection: redhat.rhel_system_roles
+            sap_ha_pacemaker_cluster_vip_client_interface: eth0
     ```
 
     {% endraw %}
 
-4. Execute the playbook:
+4.  Execute the playbook:
 
     ```bash
     [student@workstation ansible-files]$ ansible-playbook setup-pacemaker.yml -v -K
     BECOME password: student
     ```
 
-5. After the successful completion of the playbook, verify the cluster
+5.  After the successful completion of the playbook, verify the cluster
     state.
 
-    1. Log in to the `hana1` node as the root user with `redhat` as the
-       password:
+    1.  Log in to the `hana1` node as the root user with `redhat` as the
+        password:
 
-            [student@workstation ~]$ ssh root@hana1
+        ```bash
+        [student@workstation ~]$ ssh root@hana1
+        ```
 
-    2. Verify the cluster status with the following command:
+    2.  Verify the cluster status with the following command:
 
         ```bash
         [root@hana1 ~]# pcs status --full
@@ -270,4 +271,3 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 ## Finish
 
 You have configured a basic High Availability cluster for SAP HANA.
---!>
