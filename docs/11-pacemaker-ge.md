@@ -31,6 +31,7 @@ must use the same major version of Red Hat Enterprise Linux. Red Hat
 Enterprise Linux 8 clusters use Corosync 3.x for communication, although
 Red Hat Enterprise Linux 7 Pacemaker clusters use Corosync 2.x.
 
+<!--
 ### Ensure all aliases for the cluster are distributed to all nodes
 
 For running SAP HANA in a cluster we need to define virtual ip adresses for these services in /etc/hosts.
