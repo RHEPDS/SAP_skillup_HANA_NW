@@ -154,7 +154,7 @@ lab environment, although it is common in a production environment.
 
     {% endraw %}
 
-5. In the current version of the lab we have an outdated package repository. So we need to remove the compatt-sap-c++-11 requirement from the latest role, because that was not available a year ago. To so run the following command:
+5. In the current version of the lab we have an outdated package repository. So we need to remove the `compat-sap-c++-11` requirement from the latest role, because that was not available a year ago. To do so run the following command:
 
     ```bash
     sed -i 's/  - compat-sap-c++-11/  # compat-sap-c++-11/g' /home/student/.ansible/collections/ansible_collections/community/sap_install/roles/sap_general_preconfigure/vars/RedHat_8.yml
@@ -174,7 +174,8 @@ lab environment, although it is common in a production environment.
 
     - `-K`: Prompts for the `sudo` password
 
-**Finish**
+<!--
+## Finish
 
 To complete this exercise, take these steps:
 
@@ -185,7 +186,7 @@ To complete this exercise, take these steps:
   installation if not successful previously, and complete the
   exercise.
 
-<!--
+
 
     [student@workstation ansible-files]$ lab finish sap-baseconfig
     [student@workstation ansible-files]$ ansible-playbook prepare-for-sap.yml -v -K

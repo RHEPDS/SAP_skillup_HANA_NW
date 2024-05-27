@@ -63,13 +63,19 @@ HANA systems</td>
 The following dictionary defines the HANA system replication, and is
 also used in the cluster roles to configure the Pacemaker cluster:
 
-     sap_hana_cluster_nodes:
-       - node_name: HANA node 1
-         node_ip: ÌP of node1 used for system replication
-         node_role: [primary|secondary]
-         hana_site: name of site
+{% raw %}
 
-       [...]
+```yaml
+  sap_hana_cluster_nodes:
+    - node_name: HANA node 1
+      node_ip: ÌP of node1 used for system replication
+      node_role: [primary|secondary]
+      hana_site: name of site
+
+    [...]
+```
+
+{% endraw %}
 
 The dictionary must contain two or three node definitions, where exactly
 one node must have the primary role. All other nodes have the secondary

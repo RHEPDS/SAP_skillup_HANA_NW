@@ -21,15 +21,20 @@ command to prepare your system for this exercise.
 This command ensures that the environment is configured correctly for
 creating your Ansible playbooks in the future.
 
-    [student@workstation ~]$ lab start sap-hana-install
+```bash
+[student@workstation ~]$ lab start sap-hana-install
+```
 
 1.  Change to the `ansible-files` directory in your home directory:
 
-        [student@workstation ~]$ cd ~/ansible-files
+    ```bash
+    [student@workstation ~]$ cd ~/ansible-files
+    ```
 
 2.  Add the following content to the `group_vars/hanas` file:
 
     {% raw %}
+
     ```yaml
     ## BEGIN sap_hana_install parameters
     sap_hana_install_software_directory: /sap-software/HANA2SPS06
@@ -42,6 +47,7 @@ creating your Ansible playbooks in the future.
     sap_hana_install_roles_collection: 'redhat.rhel_system_roles'
     ## END sap_hana_install parameters
     ```
+
     {% endraw %}
 
     With this configuration, you achieve the following outcomes:
@@ -68,46 +74,54 @@ creating your Ansible playbooks in the future.
 3.  Create the `install-sap-hana.yml` playbook to install SAP HANA on
     the servers:
 
-        - name: Step 3-B - Install SAP HANA
-          hosts: hanas
-          become: true
+    {% raw %}
 
-          tasks:
+    ```yaml
+    - name: Step 3-B - Install SAP HANA
+      hosts: hanas
+      become: true
 
-            - name: ensure software mountpoint exists
-              file:
-                 path: "{{ sap_hana_install_software_directory }}"
-                 state: directory
-                 mode: '0755'
+      tasks:
 
-            - name: Ensure SAP software directory is mounted
-              mount:
-                src: "utility:{{ sap_hana_install_software_directory }}"
-                path: "{{ sap_hana_install_software_directory }}"
-                opts: ro
-                boot: no
-                fstype: nfs
-                state: mounted
+        - name: ensure software mountpoint exists
+          file:
+              path: "{{ sap_hana_install_software_directory }}"
+              state: directory
+              mode: '0755'
 
-            - name: execute the SAP Hana Installation
-              include_role:
-                name: community.sap_install.sap_hana_install
+        - name: Ensure SAP software directory is mounted
+          mount:
+            src: "utility:{{ sap_hana_install_software_directory }}"
+            path: "{{ sap_hana_install_software_directory }}"
+            opts: ro
+            boot: no
+            fstype: nfs
+            state: mounted
 
-            - name: Ensure SAP software directory is unmounted
-              mount:
-                path: "{{ sap_hana_install_software_directory }}"
-                state: unmounted
+        - name: execute the SAP Hana Installation
+          include_role:
+            name: community.sap_install.sap_hana_install
+
+        - name: Ensure SAP software directory is unmounted
+          mount:
+            path: "{{ sap_hana_install_software_directory }}"
+            state: unmounted
+    ```
+
+    {% endraw %}
 
 4.  Execute the `install-sap-hana.yml` playbook.
 
-        [student@workstation ansible-files]$ ansible-playbook install-sap-hana.yml -v -K
-        BECOME password: student
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook install-sap-hana.yml -v -K
+    BECOME password: student
 
-        ...output omitted...
+    ...output omitted...
 
-        PLAY RECAP
-        hana1.lab.example.com      : ok=49   changed=7    unreachable=0    failed=0    skipped=86   rescued=0    ignored=0
-        hana2.lab.example.com      : ok=49   changed=8    unreachable=0    failed=0    skipped=86   rescued=0    ignored=0
+    PLAY RECAP
+    hana1.lab.example.com      : ok=49   changed=7    unreachable=0    failed=0    skipped=86   rescued=0    ignored=0
+    hana2.lab.example.com      : ok=49   changed=8    unreachable=0    failed=0    skipped=86   rescued=0    ignored=0
+    ```
 
     Be patient. The playbook needs approximately 20 minutes to finish
     installation.
@@ -116,35 +130,41 @@ creating your Ansible playbooks in the future.
 
     1.  Log in to `hana1`
 
-            [student@workstation ansible-files]$ ssh hana1
-            [student@hana1 ~]$
+        ```bash
+        [student@workstation ansible-files]$ ssh hana1
+        [student@hana1 ~]$
+        ```
 
     2.  Assume the sidadm role. The SID is RHE, so that the user is
         `rheadm`
 
-            [student@hana1 ~]$ sudo su - rheadm
-            [sudo] password for student: student
-            rheadm@hana1:/usr/sap/RHE/HDB00>
+        ```bash
+        [student@hana1 ~]$ sudo su - rheadm
+        [sudo] password for student: student
+        rheadm@hana1:/usr/sap/RHE/HDB00>
+        ```
 
     3.  Get information on the running HANA database:
 
-            rheadm@hana1:/usr/sap/RHE/HDB00> HDB info
-            USER          PID     PPID  %CPU        VSZ        RSS COMMAND
-            rheadm      34813    34812   0.0     235320       5308 -sh
-            rheadm      35053    34813   0.0     222780       3376  \_ /bin/sh /usr/sap/RHE/HDB00/HDB info
-            rheadm      35088    35053   0.0     268532       4064      \_ ps fx -U rheadm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
-            rheadm      33070        1   0.0     605648      32288 hdbrsutil  --start --port 30003 --volume 3 --volumesuffix mnt00001/hdb00003.00003 --identifier 1662543563
-            rheadm      32640        1   0.0     605596      32480 hdbrsutil  --start --port 30001 --volume 1 --volumesuffix mnt00001/hdb00001 --identifier 1662543528
-            rheadm      32558        1   0.0      25552       3160 sapstart pf=/hana/shared/RHE/profile/RHE_HDB00_hana1
-            rheadm      32565    32558   0.1     509132      82476  \_ /usr/sap/RHE/HDB00/hana1/trace/hdb.sapRHE_HDB00 -d -nw -f /usr/sap/RHE/HDB00/hana1/daemon.ini pf=/usr/sap/RHE/SYS/profile/RHE_HDB00
-            rheadm      32587    32565  80.9   12976708    9227456      \_ hdbnameserver
-            rheadm      32936    32565   0.5    1229592     161352      \_ hdbcompileserver
-            rheadm      32939    32565   158    4845808    4090964      \_ hdbpreprocessor
-            rheadm      32975    32565  86.6   13492316    9544808      \_ hdbindexserver -port 30003
-            rheadm      32978    32565   2.9    4611388    1333984      \_ hdbxsengine -port 30007
-            rheadm      33240    32565   1.4    3424128     480388      \_ hdbwebdispatcher
-            rheadm      32478        1   0.6     523588      30932 /usr/sap/RHE/HDB00/exe/sapstartsrv pf=/hana/shared/RHE/profile/RHE_HDB00_hana1 -D -u rheadm
-            rheadm@hana1:/usr/sap/RHE/HDB00>
+        ```bash
+        rheadm@hana1:/usr/sap/RHE/HDB00> HDB info
+        USER          PID     PPID  %CPU        VSZ        RSS COMMAND
+        rheadm      34813    34812   0.0     235320       5308 -sh
+        rheadm      35053    34813   0.0     222780       3376  \_ /bin/sh /usr/sap/RHE/HDB00/HDB info
+        rheadm      35088    35053   0.0     268532       4064      \_ ps fx -U rheadm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
+        rheadm      33070        1   0.0     605648      32288 hdbrsutil  --start --port 30003 --volume 3 --volumesuffix mnt00001/hdb00003.00003 --identifier 1662543563
+        rheadm      32640        1   0.0     605596      32480 hdbrsutil  --start --port 30001 --volume 1 --volumesuffix mnt00001/hdb00001 --identifier 1662543528
+        rheadm      32558        1   0.0      25552       3160 sapstart pf=/hana/shared/RHE/profile/RHE_HDB00_hana1
+        rheadm      32565    32558   0.1     509132      82476  \_ /usr/sap/RHE/HDB00/hana1/trace/hdb.sapRHE_HDB00 -d -nw -f /usr/sap/RHE/HDB00/hana1/daemon.ini pf=/usr/sap/RHE/SYS/profile/RHE_HDB00
+        rheadm      32587    32565  80.9   12976708    9227456      \_ hdbnameserver
+        rheadm      32936    32565   0.5    1229592     161352      \_ hdbcompileserver
+        rheadm      32939    32565   158    4845808    4090964      \_ hdbpreprocessor
+        rheadm      32975    32565  86.6   13492316    9544808      \_ hdbindexserver -port 30003
+        rheadm      32978    32565   2.9    4611388    1333984      \_ hdbxsengine -port 30007
+        rheadm      33240    32565   1.4    3424128     480388      \_ hdbwebdispatcher
+        rheadm      32478        1   0.6     523588      30932 /usr/sap/RHE/HDB00/exe/sapstartsrv pf=/hana/shared/RHE/profile/RHE_HDB00_hana1 -D -u rheadm
+        rheadm@hana1:/usr/sap/RHE/HDB00>
+        ```
 
         If these processes are displayed, the installation was
         successful

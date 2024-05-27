@@ -25,26 +25,35 @@ creating your Ansible Playbooks in the future.
 
     [student@workstation ~]$ lab start sap-hana-hsr
 -->
+
 ## Installation steps
 
 1.  Change to the `ansible-files` directory in your home directory:
 
-        [student@workstation ~]$ cd ~/ansible-files
+    ```bash
+    [student@workstation ~]$ cd ~/ansible-files
+    ```
 
 2.  Add the following content to the `group_vars/hanas` file:
 
-        ## BEGIN sap_hana_hsr parameters
-        sap_hana_cluster_nodes:
-          - node_name: hana1.lab.example.com
-            node_ip: "172.25.250.22"
-            node_role: primary
-            hana_site: DC01
+    {% raw %}
 
-          - node_name: hana2.lab.example.com
-            node_ip: "172.25.250.23"
-            node_role: secondary
-            hana_site: DC02
-        ## END sap_hana_hsr parameters
+    ```yaml
+    ## BEGIN sap_hana_hsr parameters
+    sap_hana_cluster_nodes:
+      - node_name: hana1.lab.example.com
+        node_ip: "172.25.250.22"
+        node_role: primary
+        hana_site: DC01
+
+      - node_name: hana2.lab.example.com
+        node_ip: "172.25.250.23"
+        node_role: secondary
+        hana_site: DC02
+    ## END sap_hana_hsr parameters
+    ```
+
+    {% endraw %}
 
     With this configuration, you achieve the following outcome:
 
@@ -54,100 +63,112 @@ creating your Ansible Playbooks in the future.
 3.  Create the `setup-hsr.yml` playbook to install SAP HANA on the
     servers:
 
-        - name: Step 3-C - Configure HANA System Replication
-          hosts: hanas
-          become: true
+    {% raw %}
 
-          tasks:
+    ```yaml
+    - name: Step 3-C - Configure HANA System Replication
+      hosts: hanas
+      become: true
 
-            - name: Configure System Replication
-              include_role:
-                name: community.sap_install.sap_ha_install_hana_hsr
+      tasks:
+
+        - name: Configure System Replication
+          include_role:
+            name: community.sap_install.sap_ha_install_hana_hsr
+    ```
+
+    {% endraw %}
 
 4.  Execute the `setup-hsr.yml` playbook.
 
-        [student@workstation ~]$ ansible-playbook setup-hsr.yml -v -K
+    ```bash
+    [student@workstation ~]$ ansible-playbook setup-hsr.yml -v -K
+    ```
 
 5.  Log in to `hana1` and verify that system replication is working.
 
-        [student@workstation ansible-files]$ ssh hana1
-        Last login: Fri Jul 22 04:49:22 2022
-        [student@hana1 ~]$ sudo su - rheadm
-        [sudo] password for student: student
-        Last login: Fr Jul 22 04:49:35 EDT 2022 on pts/0
-        rheadm@hana1:/usr/sap/RHE/HDB00> cdpy
-        rheadm@hana1:/usr/[...]/python_support> python systemReplicationStatus.py
-        |Database |Host  |Port  |Service Name |Volume ID |Site ID |Site Name |Secon   ...
-        |         |      |      |             |          |        |          |Host    ...
-        |-------- |----- |----- |------------ |--------- |------- |--------- |------  ...
-        |SYSTEMDB |hana1 |30001 |nameserver   |        1 |      1 |DC01      |hana2   ...
-        |RHE      |hana1 |30007 |xsengine     |        2 |      1 |DC01      |hana2   ...
-        |RHE      |hana1 |30003 |indexserver  |        3 |      1 |DC01      |hana2   ...
+    ```bash
+    [student@workstation ansible-files]$ ssh hana1
+    Last login: Fri Jul 22 04:49:22 2022
+    [student@hana1 ~]$ sudo su - rheadm
+    [sudo] password for student: student
+    Last login: Fr Jul 22 04:49:35 EDT 2022 on pts/0
+    rheadm@hana1:/usr/sap/RHE/HDB00> cdpy
+    rheadm@hana1:/usr/[...]/python_support> python systemReplicationStatus.py
+    |Database |Host  |Port  |Service Name |Volume ID |Site ID |Site Name |Secon   ...
+    |         |      |      |             |          |        |          |Host    ...
+    |-------- |----- |----- |------------ |--------- |------- |--------- |------  ...
+    |SYSTEMDB |hana1 |30001 |nameserver   |        1 |      1 |DC01      |hana2   ...
+    |RHE      |hana1 |30007 |xsengine     |        2 |      1 |DC01      |hana2   ...
+    |RHE      |hana1 |30003 |indexserver  |        3 |      1 |DC01      |hana2   ...
 
-        status system replication site "2": ACTIVE
-        overall system replication status: ACTIVE
+    status system replication site "2": ACTIVE
+    overall system replication status: ACTIVE
 
-        Local System Replication State
-        ~~~~~~~~~~
+    Local System Replication State
+    ~~~~~~~~~~
 
-        mode: PRIMARY
-        site id: 1
-        site name: DC01
+    mode: PRIMARY
+    site id: 1
+    site name: DC01
+    ```
 
     Notice here that data is being replicated from `hana1` to `hana2`,
     and the servers are fully in sync.
 
 6.  Log in to `hana2` and verify the replication state.
 
-        [student@workstation ansible-files]$ ssh hana2
-        [student@hana2 ~]$ sudo su - rheadm
-        [sudo] password for student: student
-        rheadm@hana2:/usr/sap/RHE/HDB00> hdbnsutil -sr_state
+    ```bash
+    [student@workstation ansible-files]$ ssh hana2
+    [student@hana2 ~]$ sudo su - rheadm
+    [sudo] password for student: student
+    rheadm@hana2:/usr/sap/RHE/HDB00> hdbnsutil -sr_state
 
-        System Replication State
-        ~~~~~~~~
+    System Replication State
+    ~~~~~~~~
 
-        online: true
+    online: true
 
-        mode: sync
-        operation mode: logreplay
-        site id: 2
-        site name: DC02
+    mode: sync
+    operation mode: logreplay
+    site id: 2
+    site name: DC02
 
-        is source system: false
-        is secondary/consumer system: true
-        has secondaries/consumers attached: false
-        is a takeover active: false
-        is primary suspended: false
-        is timetravel enabled: false
-        replay mode: auto
-        active primary site: 1
+    is source system: false
+    is secondary/consumer system: true
+    has secondaries/consumers attached: false
+    is a takeover active: false
+    is primary suspended: false
+    is timetravel enabled: false
+    replay mode: auto
+    active primary site: 1
 
-        primary masters: hana1
+    primary masters: hana1
 
-        Host Mappings:
-        ~~~~~~
+    Host Mappings:
+    ~~~~~~
 
-        hana2 -> [DC02] hana2
-        hana2 -> [DC01] hana1
+    hana2 -> [DC02] hana2
+    hana2 -> [DC01] hana1
 
 
-        Site Mappings:
-        ~~~~~~
-        DC01 (primary/primary)
-            |---DC02 (sync/logreplay)
+    Site Mappings:
+    ~~~~~~
+    DC01 (primary/primary)
+        |---DC02 (sync/logreplay)
 
-        Tier of DC01: 1
-        Tier of DC02: 2
+    Tier of DC01: 1
+    Tier of DC02: 2
 
-        Replication mode of DC01: primary
-        Replication mode of DC02: sync
+    Replication mode of DC01: primary
+    Replication mode of DC02: sync
 
-        Operation mode of DC01: primary
-        Operation mode of DC02: logreplay
+    Operation mode of DC01: primary
+    Operation mode of DC02: logreplay
 
-        Mapping: DC01 -> DC02
-        done.
+    Mapping: DC01 -> DC02
+    done.
+    ```
 
     Notice here that `hana2` is the secondary site named `DC02`, and
     `hana1` is the primary server.
@@ -155,8 +176,10 @@ creating your Ansible Playbooks in the future.
 7.  Now that both servers are in sync, take over the primary role on
     `hana2`:
 
-        rheadm@hana2:/usr/sap/RHE/HDB00> hdbnsutil -sr_takeover
-        done.
+    ```bash
+    rheadm@hana2:/usr/sap/RHE/HDB00> hdbnsutil -sr_takeover
+    done.
+    ```
 
     Running this command might take some time.
 
@@ -170,133 +193,145 @@ creating your Ansible Playbooks in the future.
 
     1.  Log in to `hana1` and assume `rheadm`:
 
-            [student@workstation ansible-files]$ ssh hana1
-            [student@hana1 ~]$ sudo su - rheadm
-            [sudo] password for student: student
+        ```bash
+        [student@workstation ansible-files]$ ssh hana1
+        [student@hana1 ~]$ sudo su - rheadm
+        [sudo] password for student: student
+        ```
 
     2.  Stop the HANA database:
 
-            rheadm@hana1:/usr/sap/RHE/HDB00> HDB stop
-            hdbdaemon will wait maximal 300 seconds for NewDB services finishing.
-            Stopping instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol -prot NI_HTTP
-             -nr 00 -function Stop 400
+        ```bash
+        rheadm@hana1:/usr/sap/RHE/HDB00> HDB stop
+        hdbdaemon will wait maximal 300 seconds for NewDB services finishing.
+        Stopping instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol -prot NI_HTTP
+          -nr 00 -function Stop 400
 
-            07.09.2022 06:00:42
-            Stop
-            OK
-            Waiting for stopped instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol
-             -prot NI_HTTP -nr 00 -function WaitforStopped 600 2
+        07.09.2022 06:00:42
+        Stop
+        OK
+        Waiting for stopped instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol
+          -prot NI_HTTP -nr 00 -function WaitforStopped 600 2
 
-            07.09.2022 06:01:12
-            WaitforStopped
-            OK
-            hdbdaemon is stopped.
+        07.09.2022 06:01:12
+        WaitforStopped
+        OK
+        hdbdaemon is stopped.
+        ```
 
     3.  Register `hana1` as secondary host to `hana2`:
 
-            rheadm@hana1:/usr/sap/RHE/HDB00>  hdbnsutil -sr_register --name=DC01 \
-            > --remoteHost=hana2 --remoteInstance='00' --replicationMode=sync
-            --operationMode not set; using default from global.ini/[system_replication]/
-            operation_mode: logreplay
-            adding site ...
-            collecting information ...
-            updating local ini files ...
-            done.
+        ```bash
+        rheadm@hana1:/usr/sap/RHE/HDB00>  hdbnsutil -sr_register --name=DC01 \
+        > --remoteHost=hana2 --remoteInstance='00' --replicationMode=sync
+        --operationMode not set; using default from global.ini/[system_replication]/
+        operation_mode: logreplay
+        adding site ...
+        collecting information ...
+        updating local ini files ...
+        done.
+        ```
 
     4.  Start database again on `hana1`:
 
-            rheadm@hana1:/usr/sap/RHE/HDB00> HDB start
+        ```bash
+        rheadm@hana1:/usr/sap/RHE/HDB00> HDB start
 
 
-            StartService
-            Impromptu CCC initialization by 'rscpCInit'.
-              See SAP note 1266393.
-            OK
-            OK
-            Starting instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function StartWait 2700 2
+        StartService
+        Impromptu CCC initialization by 'rscpCInit'.
+          See SAP note 1266393.
+        OK
+        OK
+        Starting instance using: /usr/sap/RHE/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function StartWait 2700 2
 
 
-            07.09.2022 06:08:13
-            Start
-            OK
+        07.09.2022 06:08:13
+        Start
+        OK
 
-            07.09.2022 06:08:43
-            StartWait
-            OK
+        07.09.2022 06:08:43
+        StartWait
+        OK
+        ```
 
     5.  On `hana1`, verify the replication state:
 
-            rheadm@hana1:/usr/sap/RHE/HDB00> hdbnsutil  -sr_state
-            System Replication State
-            ~~~~~~~~
+        ```bash
+        rheadm@hana1:/usr/sap/RHE/HDB00> hdbnsutil  -sr_state
+        System Replication State
+        ~~~~~~~~
 
-            online: true
+        online: true
 
-            mode: sync
-            operation mode: logreplay
-            site id: 1
-            site name: DC01
+        mode: sync
+        operation mode: logreplay
+        site id: 1
+        site name: DC01
 
-            is source system: false
-            is secondary/consumer system: true
-            has secondaries/consumers attached: false
-            is a takeover active: false
-            is primary suspended: false
-            is timetravel enabled: false
-            replay mode: auto
-            active primary site: 2
+        is source system: false
+        is secondary/consumer system: true
+        has secondaries/consumers attached: false
+        is a takeover active: false
+        is primary suspended: false
+        is timetravel enabled: false
+        replay mode: auto
+        active primary site: 2
 
-            primary masters: hana2
+        primary masters: hana2
 
-            Host Mappings:
-            ~~~~~~
+        Host Mappings:
+        ~~~~~~
 
-            hana1 -> [DC02] hana2
-            hana1 -> [DC01] hana1
+        hana1 -> [DC02] hana2
+        hana1 -> [DC01] hana1
 
 
-            Site Mappings:
-            ~~~~~~
-            DC02 (primary/primary)
-                |---DC01 (sync/logreplay)
+        Site Mappings:
+        ~~~~~~
+        DC02 (primary/primary)
+            |---DC01 (sync/logreplay)
 
-            Tier of DC02: 1
-            Tier of DC01: 2
+        Tier of DC02: 1
+        Tier of DC01: 2
 
-            Replication mode of DC02: primary
-            Replication mode of DC01: sync
+        Replication mode of DC02: primary
+        Replication mode of DC01: sync
 
-            Operation mode of DC02: primary
-            Operation mode of DC01: logreplay
+        Operation mode of DC02: primary
+        Operation mode of DC01: logreplay
 
-            Mapping: DC02 -> DC01
-            done.
+        Mapping: DC02 -> DC01
+        done.
+        ```
 
 9.  On `hana2`, verify the replication state:
 
-        [student@workstation ansible-files]$ ssh hana2
-        Last login: Fri Jul 22 04:49:22 2022
-        [student@hana2 ~]$ sudo su - rheadm
-        [sudo] password for student: student
-        Last login: Fr Jul 22 04:49:35 EDT 2022 on pts/0
-        rheadm@hana2:/usr/sap/RHE/HDB00> cdpy
-        rheadm@hana2:/usr/[...]/python_support> python systemReplicationStatus.py
-        |Database |Host  |Port  |Service Name |Volume ID |Site ID |Site Name |Secon   ...
-        |         |      |      |             |          |        |          |Host    ...
-        |-------- |----- |----- |------------ |--------- |------- |--------- |-----   ...
-        |SYSTEMDB |hana2 |30001 |nameserver   |        1 |      2 |DC02      |hana1   ...
-        |RHE      |hana2 |30007 |xsengine     |        2 |      2 |DC02      |hana1   ...
-        |RHE      |hana2 |30003 |indexserver  |        3 |      2 |DC02      |hana1   ...
+    ```bash
+    [student@workstation ansible-files]$ ssh hana2
+    Last login: Fri Jul 22 04:49:22 2022
+    [student@hana2 ~]$ sudo su - rheadm
+    [sudo] password for student: student
+    Last login: Fr Jul 22 04:49:35 EDT 2022 on pts/0
+    rheadm@hana2:/usr/sap/RHE/HDB00> cdpy
+    rheadm@hana2:/usr/[...]/python_support> python systemReplicationStatus.py
+    |Database |Host  |Port  |Service Name |Volume ID |Site ID |Site Name |Secon   ...
+    |         |      |      |             |          |        |          |Host    ...
+    |-------- |----- |----- |------------ |--------- |------- |--------- |-----   ...
+    |SYSTEMDB |hana2 |30001 |nameserver   |        1 |      2 |DC02      |hana1   ...
+    |RHE      |hana2 |30007 |xsengine     |        2 |      2 |DC02      |hana1   ...
+    |RHE      |hana2 |30003 |indexserver  |        3 |      2 |DC02      |hana1   ...
 
-        status system replication site "1": ACTIVE
-        overall system replication status: ACTIVE
+    status system replication site "1": ACTIVE
+    overall system replication status: ACTIVE
 
-        Local System Replication State
-        ~~~~~~~~~~
+    Local System Replication State
+    ~~~~~~~~~~
 
-        mode: PRIMARY
-        site id: 2
-        site name: DC02
+    mode: PRIMARY
+    site id: 2
+    site name: DC02
+    ```
 
     If the overall system replication status is `ACTIVE`, the system
     replication is configured correctly.
