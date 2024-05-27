@@ -82,7 +82,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
         alias_mode: overwrite
     ```
 
-    {% endraw%}
+    {% endraw %}
 
 4. Create a playbook `update_host_aliases.yml` with the following content:
 
