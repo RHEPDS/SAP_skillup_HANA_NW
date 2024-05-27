@@ -29,15 +29,20 @@ creating your Ansible playbooks in the future.
 
 2.  Add the following content to the `group_vars/hanas` file:
 
-        ## BEGIN sap_hana_install parameters
-        sap_hana_install_software_directory: /sap-software/HANA2SPS06
-        sap_hana_install_software_extract_directory: /sap-hana-inst
-        sap_hana_install_master_password: "R3dh4t$123"
-        sap_hana_sid: "RHE"
-        sap_hana_instance_number: "00"
-        sap_hana_install_restrict_max_mem: 'y'
-        sap_hana_install_max_mem: 38912
-        ## END sap_hana_install parameters
+    {% raw %}
+    ```yaml
+    ## BEGIN sap_hana_install parameters
+    sap_hana_install_software_directory: /sap-software/HANA2SPS06
+    sap_hana_install_software_extract_directory: /sap-hana-inst
+    sap_hana_install_master_password: "R3dh4t$123"
+    sap_hana_sid: "RHE"
+    sap_hana_instance_number: "00"
+    sap_hana_install_restrict_max_mem: 'y'
+    sap_hana_install_max_mem: 38912
+    sap_hana_install_roles_collection: 'redhat.rhel_system_roles'
+    ## END sap_hana_install parameters
+    ```
+    {% endraw %}
 
     With this configuration, you achieve the following outcomes:
 
@@ -52,6 +57,8 @@ creating your Ansible playbooks in the future.
     - HANA is installed with SID `RHE` and instance number `00`.
 
     - The memory is limited to 38 GB in this installation.
+
+    - the community role will use redhat.rhel_system_roles collection
 
     Later in the course, you install S/4HANA Foundation on this HANA
     database, which writes only approximately 18 GB into the HANA
@@ -84,7 +91,7 @@ creating your Ansible playbooks in the future.
 
             - name: execute the SAP Hana Installation
               include_role:
-                name: redhat.sap_install.sap_hana_install
+                name: community.sap_install.sap_hana_install
 
             - name: Ensure SAP software directory is unmounted
               mount:

@@ -2,7 +2,7 @@
 layout: default
 title: Installing and Configuring Ansible Roles for Base Configuration of SAP Systems
 nav_order: 3
-parent: Day 2
+parent: Day 1
 ---
 
 # Installing and Configuring Ansible Roles for Base Configuration of SAP Systems
