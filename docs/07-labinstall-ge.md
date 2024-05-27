@@ -44,7 +44,7 @@ creating your Ansible playbooks in the future.
     sap_hana_instance_number: "00"
     sap_hana_install_restrict_max_mem: 'y'
     sap_hana_install_max_mem: 38912
-    sap_hana_install_roles_collection: 'redhat.rhel_system_roles'
+    sap_hana_install_system_roles_collection: 'redhat.rhel_system_roles'
     ## END sap_hana_install parameters
     ```
 
