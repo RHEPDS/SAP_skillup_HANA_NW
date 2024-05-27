@@ -63,8 +63,6 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 
 3.  Create the file `group_vars/all` with the following content
 
-    {% raw % }
-
     ```yaml
     # Virtual IP addresses
     sap_service_vips:
@@ -81,8 +79,6 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
         state: present
         alias_mode: overwrite
     ```
-
-    {% endraw %}
 
 4.  Create a playbook `update_host_aliases.yml` with the following content:
 
