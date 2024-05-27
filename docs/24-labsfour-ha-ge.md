@@ -117,11 +117,14 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 1.  Change to the `ansible-files` directory in your home directory:
 
-        [student@workstation ~]$ cd ~/ansible-files
+    ```bash
+    [student@workstation ~]$ cd ~/ansible-files
+    ```
 
 2.  Create or extend the file `group_vars/s4hanas` with the following content
 
     {% raw %}
+
     ```yaml
     ### If the hostname setup is not configured correctly
     #   you need set sap_ip and sap_domain.
@@ -471,6 +474,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
           password: password
           lanplus: 1
     ```
+
     {% endraw %}
 
     With this configuration, you achieve the following outcomes:
@@ -495,6 +499,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 3.  Create a playbook `install-s4-ha-phase1.yml` with the following content:
 
     {% raw %}
+
     ```yaml
     ---
     # Ansible Playbook for SAP S/4HANA Distributed HA installation
@@ -612,19 +617,23 @@ You can find more sophisticated playbooks on the [project source page](https://g
               - rsync
             state: present
     ```
+
     {% endraw %}
 
 4.  Execute the playbook `install-s4-ha-phase1.yml`:
 
-        [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
-        BECOME password: student
-        ...output omitted...
+    ```bash
+    [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
+    BECOME password: student
+    ...output omitted...
+    ```
 
 ### Phase 2: Install ASCS
-    
+
 1.  Create the playbook `install-s4-ha-phase2-ascs.yml` with the following content:
 
     {% raw %}
+
     ```yaml
     - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
       hosts: s4ascs
@@ -659,6 +668,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 2.  Execute Playbook `install-s4-ha-phase2-ascs.yml`:
@@ -687,16 +697,19 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
     To display the installation log run the following commands:
 
-        [student@workstation ansible-files]$ ssh nodea
-        [student@nodea ~]$ sudo -i
-        [root@nodea ~]# tail -f \
-        > $(cat /tmp/sapinst_instdir/.lastInstallationLocation)/sapinst.log
+    ```bash
+    [student@workstation ansible-files]$ ssh nodea
+    [student@nodea ~]$ sudo -i
+    [root@nodea ~]# tail -f \
+    > $(cat /tmp/sapinst_instdir/.lastInstallationLocation)/sapinst.log
+    ```
 
 ### Phase 3: Install ERS
 
 1.  Create the playbook `install-s4-ha-phase3-ers.yml`with the following content:
 
     {% raw %}
+
     ```yaml
     - name: Ansible Play for SAP NetWeaver Application Server installation - ABAP Central Services (ASCS) for HA
       hosts: s4ers
@@ -731,6 +744,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 2. Execute Playbook `install-s4-ha-phase3-ers.yml`:
@@ -744,7 +758,9 @@ You can find more sophisticated playbooks on the [project source page](https://g
 ### Phase 4: Configure Pacemaker ASCS/ERS Cluster
 
 1.  Create the playbook `install-s4-ha-phase4-cluster.yml`with the following content:
-    
+
+    {% raw %}
+
     ```yaml
     - name: Configure High Availability using ABAP Central Services (ASCS) and Enqueue Replication Service (ERS) with Standalone Enqueue Server 2 (ENSA2)
       hosts: s4ers,s4ascs
@@ -819,6 +835,8 @@ You can find more sophisticated playbooks on the [project source page](https://g
             sap_ha_pacemaker_cluster_nwas_abap_ers_sapinstance_start_profile_string: "/sapmnt/{{ sap_swpm_sid }}/profile/{{ sap_swpm_sid }}_ERS{{ sap_swpm_ers_instance_nr }}_{{ sap_swpm_ers_instance_hostname }}"
     ```
 
+    {% endraw %}
+
 2. Execute playbook `install-s4-ha-phase4-cluster.yml`:
 
     ```bash
@@ -832,6 +850,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 1.  Create the playbook `install-s4-ha-phase5-dbload.yml`:
 
     {% raw %}
+
     ```yaml
     - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
       hosts: s4pas
@@ -866,6 +885,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 2. Execute playbook `install-s4-ha-phase5-dbload.yml`
@@ -881,6 +901,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 1.  Create the playbook `install-s4-ha-phase6-pas.yml` with the following content: 
 
     {% raw %}
+
     ```yaml
     - name:  Ansible Play for SAP NetWeaver Application Server - Installation Export Database Load from the Primary Application Server (PAS)
       hosts: s4pas
@@ -915,6 +936,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 2. Execute playbook `install-s4-ha-phase6-pas.yml`:
@@ -930,6 +952,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 1.  Create the playbook `install-s4-ha-phase7-aas.yml` with the following content:
 
     {% raw %}
+
     ```yaml
     - name:  Ansible Play for SAP NetWeaver AAS
       hosts: s4aas
@@ -964,6 +987,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 2.  Execute playbook `install-s4-ha-phase7-as.yml`:
@@ -976,7 +1000,7 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
 ### Test that SAP is running as expected
 
-12.  Verify that SAP S/4 is running on the PAS:
+1.  Verify that SAP S/4 is running on the PAS:
 
     ```bash
     [student@workstation ~]$ ssh nodec
@@ -994,6 +1018,3 @@ You can find more sophisticated playbooks on the [project source page](https://g
 ## Finish
 
 You have successfully installed a distributed SAP S/4HANA Foundation with pacemaker cluster.
-
-- Run the `lab` command on the `workstation` machine, and use the
-  `lab` command to create the files in this exercise.

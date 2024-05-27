@@ -22,25 +22,22 @@ command to prepare your system for this exercise.
 This command ensures that the environment is configured correctly for
 creating your Ansible Playbooks in the future.
 
-{% raw %}
 ```bash
 [student@workstation ~]$ lab start sap-s4-install
 ```
-{% endfor %}
 
 This process might take some time.
 
 1.  Change to the `ansible-files` directory in your home directory:
 
-    {% raw %}
     ```bash
     [student@workstation ~]$ cd ~/ansible-files
     ```
-    {% endraw %}
 
 2.  Add the following content to the `group_vars/s4hanas` file:
 
     {% raw %}
+
     ```yaml
     ## BEGIN SAP S/4 install parameters
     # sap_swpm
@@ -80,6 +77,7 @@ This process might take some time.
     sap_swpm_db_instance_nr: "00"
     ## END SAP S/4 install parameters
     ```
+
     {% endraw %}
 
     With this configuration, you achieve the following outcomes:
@@ -107,7 +105,8 @@ This process might take some time.
     servers:
 
     {% raw %}
-    ````
+
+    ```yaml
     ---
     - name: Install S4
       hosts: nodea.lab.example.com
@@ -138,11 +137,12 @@ This process might take some time.
             path: "{{ sap_swpm_software_path }}"
             state: unmounted
     ```
+
     {% endraw %}
 
 4.  Execute the `install-s4.yml` playbook:
 
-    ```
+    ```bash
     [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
     BECOME password: student
     ...output omitted...
@@ -152,7 +152,7 @@ This process might take some time.
     minutes. After the installation starts, you see the following
     message:
 
-    ````
+    ```bash
     TASK [community.sap_install.sap_swpm : SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds] **************************************************
     FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (1000 retries left).
     FAILED - RETRYING: [nodea.lab.example.com]: SAP SWPM - Wait for sapinst process to exit, poll every 60 seconds (999 retries left).
@@ -165,7 +165,7 @@ This process might take some time.
 
     To display the installation log run the following commands:
 
-    ```
+    ```bash
     [student@workstation ansible-files]$ ssh nodea
     [student@nodea ~]$ sudo -i
     [root@nodea ~]# tail -f \
@@ -174,7 +174,7 @@ This process might take some time.
 
 5.  Verify that SAP S/4 is running:
 
-    ```
+    ```bash
     [student@workstation ~]$ ssh nodea
     [student@nodea ~]$ sudo su - rheadm
     [sudo] password for student: student
@@ -187,6 +187,7 @@ This process might take some time.
 
     If the return value is 0, then everything is fine.
 
+<!---
 ## Finish
 
 To complete this exercise, take these steps:
@@ -200,7 +201,8 @@ To complete this exercise, take these steps:
 These steps are important to ensure that resources from previous
 exercises do not impact upcoming exercises.
 
-```
+```bash
 [student@workstation ansible-files]$ lab finish sap-s4-install
 [student@workstation ansible-files]$ ansible-playbook install-s4.yml -v -K
 ```
+--->

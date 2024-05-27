@@ -7,7 +7,7 @@ parent: Day 4
 
 # Verifying the Configuration of HA Cluster Managing SAP Resources
 
-**Outcomes**
+# Outcomes
 
 After completing this section, you should be able to verify the status
 of a basic high availability cluster for managing SAP HANA or SAP
@@ -21,44 +21,60 @@ clusters use Corosync 2.x.
 1.  Run the `pcs status` command to verify the current state of the
     cluster:
 
-        [root@node ~]# pcs status
+    ```bash
+    [root@node ~]# pcs status
+    ```
 
     To verify the detailed status of the cluster, including the
     configuration, use the `pcs config` command:
 
-        [root@nodea ~]# pcs config
+    ```bash
+    [root@nodea ~]# pcs config
+    ```
 
 2.  When performing any maintenance activity, you might want to monitor
     the real-time status of the cluster in a separate terminal. Run the
     following command to start the real-time monitoring:
 
-        [root@nodea ~]# crm_mon
+    ```bash
+    [root@nodea ~]# crm_mon
+    ```
 
     This process occupies the terminal; to return to the prompt, press
     Ctrl+c.
 
 3.  To verify resource constraints, run the `pcs constraint` command:
 
-        [root@nodea ~]# pcs constraint
+    ```bash
+    [root@nodea ~]# pcs constraint
+    ```
 
 4.  To review the constraints in more detail, run the
     `pcs constraint --full` command:
 
-        [root@nodea ~]# pcs constraint --full
+    ```bash
+    [root@nodea ~]# pcs constraint --full
+    ```
 
 5.  Move the resource and verify the status:
 
-        [root@nodea ~]# pcs resource move <sap-resource> <Node-Name>
+    ```bash
+    [root@nodea ~]# pcs resource move <sap-resource> <Node-Name>
+    ````
 
 6.  For SAP HANA resources, use the following command for the move:
 
-        [root@nodea ~]# crm_resource --move --resource <sap-hana-resource> \
-        > <Node-Name>
+    ```bash
+    [root@nodea ~]# crm_resource --move --resource <sap-hana-resource> \
+    > <Node-Name>
+    ````
 
 7.  To prevent the `myresource` resource group from running on node2,
     execute the following command:
 
-        [root@nodea ~]# pcs resource ban <sap-resource> node2.example.com
+    ```bash
+    [root@nodea ~]# pcs resource ban <sap-resource> node2.example.com
+    ```
 
     Both `pcs resource move` and `pcs resource ban` create a constraint
     rule on the cluster. Constraints are used, among other reasons, to
@@ -68,13 +84,17 @@ clusters use Corosync 2.x.
     To clear the ban restriction for the `sapresource` resource group,
     execute the following command:
 
-        [root@nodea ~]# pcs resource clear <sapresource>
+    ```bash
+    [root@nodea ~]# pcs resource clear <sapresource>
+    ```
 
     To view current resource defaults, run this command:
 
-        [root@nodea ~]# pcs resource defaults
+    ```bash
+    [root@nodea ~]# pcs resource defaults
+    ```
 
-**Finish**
+## Finish
 
 You have verified the configuration of a RHEL HA cluster for managing
 SAP resources.
