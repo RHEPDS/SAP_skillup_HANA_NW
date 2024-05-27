@@ -54,7 +54,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
     community.sap_libs        1.1.0
     community.sap_operations  0.9.0
     ```
-
+<!--
 2. Change to the `ansible-files` directory in your home directory:
 
     ```bash
@@ -269,3 +269,4 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
 ## Finish
 
 You have configured a basic High Availability cluster for SAP HANA.
+--!>
