@@ -138,9 +138,11 @@ You can find more sophisticated playbooks on the [project source page](https://g
     sap_general_preconfigure_update: true
     sap_general_preconfigure_fail_if_reboot_required: false
     sap_general_preconfigure_reboot_ok: true
+    sap_general_preconfigure_system_roles_collection: 'redhat.rhel_system_roles'
 
     ### redhat.sap_install.sap_netweaver_preconfigure
     sap_netweaver_preconfigure_fail_if_not_enough_swap_space_configured: false
+    sap_netweaver_preconfigure_system_roles_collection: 'redhat.rhel_system_roles'
 
     ## Info for S4HANA HA
     # Software Installation Path
@@ -768,24 +770,6 @@ You can find more sophisticated playbooks on the [project source page](https://g
       any_errors_fatal: true
       max_fail_percentage: 0
       tasks:
-        # Execute setup of SAP NetWeaver ASCS/ERS HA cluster
-        # -- Linux Pacemaker cluster preparation
-        # -- Linux Pacemaker basic cluster configuration, 2 nodes
-        # -- SAP NetWeaver ASCS/ERS HA configuration, with a Virtual IP (VIP)
-        # -- Fencing Agent/s setup for Infrastructure: fence_aws
-        # -- Resource Agent/s setup for Infrastructure: aws-vpc-move-ip
-        # -- Resource Agent/s setup for SAP: Filesystem, SAPInstance
-        # -- SAP NetWeaver ASCS host:
-        # ----> Filesystem for /sapmnt
-        # ----> Filesystem for /usr/sap/trans
-        # ----> Filesystem for /usr/sap/{{ sap_system_id }}/SYS
-        # ----> Filesystem for /sapmnt
-        # ----> Filesystem for /usr/sap/{{ sap_system_id }}/ASCS{{ sap_system_nwas_abap_ascs_instance_nr }}
-        # ----> SAPInstance for /sapmnt/{{ sap_system_sid }}/profile/{{ sap_system_sid }}_ASCS{{ sap_system_nwas_abap_ascs_instance_nr }}
-        # -- SAP NetWeaver ERS host:
-        # ----> Filesystem for /usr/sap/{{ sap_system_id }}/ERS{{ sap_system_nwas_abap_ers_instance_nr }}
-        # ----> SAPInstance for /sapmnt/{{ sap_system_sid }}/profile/{{ sap_system_sid }}_ERS{{ sap_system_nwas_abap_ers_instance_nr }}
-
         - name: Execute Ansible Role sap_ha_pacemaker_cluster
           ansible.builtin.include_role:
             name: community.sap_install.sap_ha_pacemaker_cluster
@@ -805,22 +789,11 @@ You can find more sophisticated playbooks on the [project source page](https://g
             sap_ha_pacemaker_cluster_storage_definition:
               - name: usr_sap
                 mountpoint: /usr/sap
-                nfs_path: /usr/sap
-                nfs_server: "{{ sap_storage_nfs_server }}"
-
-              - name: usr_sap_trans
-                mountpoint: /usr/sap/trans
-                nfs_path: /usr/sap/trans
-                nfs_server: "{{ sap_storage_nfs_server }}"
-
-              - name: sapmnt
-                mountpoint: /sapmnt
-                nfs_path: /sapmnt
-                nfs_server: "{{ sap_storage_nfs_server }}"
-
+                nfs_path: /sap-software/mounts/usr/sap
+                nfs_server: "{{ sap_storage_nfs_server }}:"
             sap_ha_pacemaker_cluster_storage_nfs_filesytem_type: nfs4
             sap_ha_pacemaker_cluster_storage_nfs_mount_options: defaults,hard,acl
-            sap_ha_pacemaker_cluster_storage_nfs_server: "{{ sap_storage_nfs_server | default('') }}"
+            sap_ha_pacemaker_cluster_storage_nfs_server: "{{ sap_storage_nfs_server }}:"
 
             # SID and Instance Numbers for ASCS and ERS.
             sap_ha_pacemaker_cluster_nwas_abap_sid: "{{ sap_swpm_sid }}"
