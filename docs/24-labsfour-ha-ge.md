@@ -788,9 +788,10 @@ You can find more sophisticated playbooks on the [project source page](https://g
 
         - name: Execute Ansible Role sap_ha_pacemaker_cluster
           ansible.builtin.include_role:
-          o  name: community.sap_install.sap_ha_pacemaker_cluster
+            name: community.sap_install.sap_ha_pacemaker_cluster
           vars:
             sap_ha_pacemaker_cluster_system_roles_collection: redhat.rhel_system_roles
+            ha_cluster_enable_repos: false
             ha_cluster_cluster_name: clusternwasascs
             ha_cluster_hacluster_password: 'clusterpass'
             ha_cluster:
