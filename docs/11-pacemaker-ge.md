@@ -176,6 +176,7 @@ For running SAP HANA in a cluster we need to define virtual ip adresses for thes
           vars:
             sap_ha_pacemaker_cluster_system_roles_collection: redhat.rhel_system_roles
             sap_ha_pacemaker_cluster_vip_client_interface: eth0
+            ha_cluster_enable_repos: false
     ```
 
     {% endraw %}
