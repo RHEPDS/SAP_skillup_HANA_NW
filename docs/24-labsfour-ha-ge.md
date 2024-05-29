@@ -2,7 +2,7 @@
 layout: default
 title: Setting up SAP S/4 distributed HA
 nav_order: 24
-parent: Day 3
+parent: Day 2
 ---
 
 # Guided Exercise: Setting up SAP S/4 distributed HA
